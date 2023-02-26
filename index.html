@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>62bit的秘密基地</title><meta name="author" content="62bit"><meta name="copyright" content="62bit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="62bit的秘密基地">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="62bit的秘密基地">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/favicon.png">
+<meta property="article:author" content="62bit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/favicon.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 62bit","link":"链接: ","source":"来源: 62bit的秘密基地","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '62bit的秘密基地',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2023-02-26 15:53:45'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/banner.png')"><nav id="nav"><span id="blog-info"><a href="/" title="62bit的秘密基地"><span class="site-name">62bit的秘密基地</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">62bit的秘密基地</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/02/26/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%85%A5/" title="数据仓库之数据接入">数据仓库之数据接入</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-26T07:40:30.000Z" title="发表于 2023-02-26 15:40:30">2023-02-26</time></span></div><div class="content">前段时间用爬虫爬了b站的数据，就想着这些数据在我学习大数据的路上能派上什么用场，于是构思了一个小项目来练手，大概的逻辑就是尝试将数据存入分布式数仓中，然后展示
+基础结构pyhton爬虫 -&gt; csv -&gt; filebeat -&gt; kafka -&gt; spark -&gt; hive -&gt;finereport
+用python爬取数据保存到CSV文件，filebeat监听csv文件，将数据传入Kafka，再通过spark streaming将数据从kafka导入hive，最后用帆软报表展示数据
+组件Hadoop 3.3.0
+Filebeat 8.4.3
+Kafka 2.6
+Spark 3.3.0
+Hive 3
+Finereport
+第一步：爬虫编写参考我之前写的爬虫
+爬虫初体验 爬取b站各分区视频信息 | 62bit的秘密基地
+第二步：数据接入搭建Kafka集群 kafka简述与集群配置_Relian哈哈的博客-CSDN博客_kafka集群配置
+编写Kafka集群启动脚本1234567891011121314151617181920212223242526272 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/02/23/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2Manacher%E7%AE%97%E6%B3%95/" title="算法复习：最长回文子串Manacher算法">算法复习：最长回文子串Manacher算法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-23T06:36:00.000Z" title="发表于 2023-02-23 14:36:00">2023-02-23</time></span></div><div class="content">力扣链接：5. 最长回文子串 - 力扣（Leetcode）
+参考：
+基础提升：3 KMP、Manacher算法等_哔哩哔哩_bilibili
+算法学习笔记 | 62bit的秘密基地
+解法一 中心扩散以“122131121”为例，把每个字符当作一共回文串的中心，向两边扩散，记录最长的回文串的长度，但是这样会漏掉长度为偶数的回文串（例如1221），可以用特殊字符（例如 ’#‘）将每个字符分开，于是原始字符串变成了“#1#2#2#1#3#1#1#2#1#”，这样再用中心扩散法，然后把最后的答案除以2即可得到长度
+1234567891011121314151617181920212223242526272829303132333435363738class Solution &#123;    public String longestPalindrome(String s) &#123;        int n = s.length() * 2 + 1;        char[] newStr = new char[n];        int idx = 0;        for(i ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/02/22/%E7%88%AC%E8%99%AB%E5%88%9D%E4%BD%93%E9%AA%8C-%E7%88%AC%E5%8F%96b%E7%AB%99%E5%90%84%E5%88%86%E5%8C%BA%E8%A7%86%E9%A2%91%E4%BF%A1%E6%81%AF/" title="爬虫初体验 爬取b站各分区视频信息">爬虫初体验 爬取b站各分区视频信息</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-22T11:57:14.000Z" title="发表于 2023-02-22 19:57:14">2023-02-22</time></span></div><div class="content">想要爬取b站过年期间各个分区的视频信息，作为学习爬虫的小练习
+
+经过一番翻找，找到了存放相关数据的文件
+
+观察链接：
+https://s.search.bilibili.com/cate/search?main_ver=v3&amp;search_type=video&amp;view_type=hot_rank&amp;copy_right=-1&amp;new_web_tag=1&amp;order=click&amp;cate_id=24&amp;page=1&amp;pagesize=30&amp;time_from=20230215&amp;time_to=20230222
+用 https://www.bejson.com 观察json视图：
+
+通过观察和一些小的测试，得出以下结论：
+
+链接中cate_id代表的是某根分区下的某个子分区
+链接中的每个视频的信息是按照播放量（play字段）降序排序的
+链接中page代表搜索的页数
+pagesize代表每页最大视频数量，经过测试最大为100
+time_from和time_to代表搜索时间的范围
+每条视频的信息包含：上传时间（pub ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/02/22/%E5%85%B3%E4%BA%8E%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%94%B5%E8%84%91%E6%91%84%E5%83%8F%E5%A4%B4%E6%98%BE%E7%A4%BA%E6%AD%A3%E5%B8%B8%E5%B7%A5%E4%BD%9C%E5%8D%B4%E6%B2%A1%E6%9C%89%E5%9B%BE%E5%83%8F%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于笔记本电脑摄像头显示正常工作却没有图像的问题">关于笔记本电脑摄像头显示正常工作却没有图像的问题</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-22T09:58:36.000Z" title="发表于 2023-02-22 17:58:36">2023-02-22</time></span></div><div class="content">今天要用到笔记本摄像头却突然发现用不了了，笔记本摄像头的提示灯是亮着的，检查电脑设置和设备管理器发现摄像头也在正常工作，但是显示如下画面：
+
+起初以为是我用的软件（OBS）有问题，就去更新了OBS（OBS更新是真慢啊），但是没有解决问题，又去重新安装的驱动，也没有解决问题。
+最后发现是万恶的联想电脑管家把摄像头设置成了隐私模式，导致设备显示正常工作但是没有图像！浪费了我两个小时！
+解决方法如下：
+
+打开联想电脑管家找到右上角的实用工具
+打开桌面助手
+找到隐私组件
+打开摄像头权限
+
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/02/16/%E5%85%B3%E4%BA%8E-IntelliJ-Maven-error-Repository-is-non-nexus-repo-or-is-not-indexed-remote-update-error-%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题">关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-16T05:55:07.000Z" title="发表于 2023-02-16 13:55:07">2023-02-16</time></span></div><div class="content">今天用IDEA maven导入github上一个项目的包，报了无法解析该依赖的错误
+查看 File | Settings | Build, Execution, Deployment | Build Tools | Maven | Repositories 发现（remote updated error）无法更新远程库，报错信息是IntelliJ Maven error: Repository is non-nexus repo, or is not indexed
+在互联网上找了很久的解决方案，最后看到一个博客 Maven 配置遇到的问题Remote Update Error，发现原因是我的maven配置了阿里巴巴的镜像源，解决办法如下：
+
+将maven文件中conf&#x2F;settings.xml中的镜像配置注释掉
+reload maven，然后等待几分钟
+问题解决，回到settings.xml中取消注释
+
+参考博客：
+
+关于idea maven remote update error的问题 - 简书 (jianshu.com)
+ Maven 配置遇到的问题Remote Upd ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/02/03/Zookeeper%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Zookeeper学习笔记">Zookeeper学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-03T05:51:19.000Z" title="发表于 2023-02-03 13:51:19">2023-02-03</time></span></div><div class="content">概述
+开源的分布式服务框架
+为其他框架稳定运行提供服务
+统一命名服务（Dubbo）、分布式配置管理（Solr）、分布式消息队列（pub &#x2F; sub）、分布式锁、分布式协调管理等
+
+结构设计
+主从架构（leader &#x2F; follower），一个领导者，多个跟随者
+集群中有半数以上节点存活，ZK集群就能正常服务
+
+特点
+全局数据一致
+更新请求顺序进行
+数据更新原子性
+实时性
+
+Leader
+事物请求（写操作）的唯一调度和处理者
+
+Follower
+处理非事物（读操作）请求，转发事物请求给Leader
+参与集群Leader选举投票
+
+数据模型
+与标准文件系统类似，采用树形结构，每个节点称之为Znode，根节点为 &#x2F;
+Znode兼具文件夹和文件的特点，既可以存储数据（data），也可以有子Znode（children）
+Znode具有原子性操作
+Znode存储数据大小至多为1M
+Znode通过路径进行引用，必须是绝对路径
+
+Znode的节点类型
+临时节点
+永久节点
+序列化节点：给指定节点增加序列号
+
+Leader选举机制Zookeeper选举机制有几种类型？ -  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/01/31/GitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" title="GitHub+Hexo搭建个人博客">GitHub+Hexo搭建个人博客</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-31T05:30:36.000Z" title="发表于 2023-01-31 13:30:36">2023-01-31</time></span></div><div class="content">GitHub创建个人仓库仓库名必须为：用户名.github.io
+搭建博客需要的工具GitNode.jsnodejs安装及环境配置
+Hexo1npm install hexo-cli -g
+
+遇到的坑：安装完hexo之后，运行hexo -v命令，提示：bash:hexo:command not found
+解决办法：完美解决 bash: hexo: command not found
+生成SSH Keys1ssh-keygen -t rsa -C &quot;GitHub注册邮箱&quot;
+
+找到 C:\Users\当前用户\ .ssh文件夹中的id_rsa.pub密钥
+将密钥内容复制到GitHub_Settings_SSH and GPG keys中的SSH keys中
+测试SSH是否绑定成功
+1ssh -T git@github.com
+
+在本地创建仓库本地新建一个博客文件夹
+在博客文件夹中打开git bash
+123hexo init #初始化hexonpm install hexo-server --save #安装hexo-serverhexo s #启动server
+
+本 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/12/07/Kaggle%E7%BB%83%E4%B9%A0-Spark%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/" title="Kaggle练习:Spark房价预测">Kaggle练习:Spark房价预测</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-07T05:50:13.000Z" title="发表于 2022-12-07 13:50:13">2022-12-07</time></span></div><div class="content">写在前面数据集：House Prices - Advanced Regression Techniques | Kaggle
+参考：零基础入门 Spark (geekbang.org)
+具体实现特征工程1. 读取数据123456789val rootPath: String = _val filePath: String = s&quot;$rootPath/train.csv&quot;// 读取文件，创建DataFrameval spark = SparkSession  .builder()  .appName(&quot;sparkdf&quot;)  .master(&quot;local[*]&quot;)  .getOrCreate()var df: DataFrame = spark.read.format(&quot;csv&quot;).option(&quot;header&quot;, value = true).load(filePath)
+
+2. 数据分类​		为了提升数据的区分度，对部分字段采用离散化处理，所以要事先分配好需要离散化的字段
+12345678 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/11/21/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Spark学习笔记">Spark学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-21T05:45:47.000Z" title="发表于 2022-11-21 13:45:47">2022-11-21</time></span></div><div class="content">看的是极客时间的课同时结合官网
+Overview - Spark 3.3.1 Documentation (apache.org)
+零基础入门 Spark (geekbang.org)
+基础知识01 Spark：从“大数据的Hello World”开始准备工作
+IDEA安装Scala插件
+
+构建Maven项目
+
+pom.xml加入spark
+1234567&lt;dependencies&gt;        &lt;dependency&gt;            &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;            &lt;artifactId&gt;spark-core_2.12&lt;/artifactId&gt;            &lt;version&gt;3.2.0&lt;/version&gt;        &lt;/dependency&gt;&lt;/dependencies&gt;
+
+Word Count1. 读取内容123456val rootPath: String = &quot;xx ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/06/16/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="算法学习笔记">算法学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-06-16T05:43:20.000Z" title="发表于 2022-06-16 13:43:20">2022-06-16</time></span></div><div class="content">B站链接
+细节都写在注释里了
+最近想要用伪代码实现之前写过的代码
+排序交换数组中的两个数12345678910111213141516//常规方法public static void swap1(int[]arr,int i,int j)&#123;        int temp = arr[i];        arr[i] = arr[j];        arr[j] = temp;&#125;//用位运算,执行速度更快,少申请一个变量//本质：得到两数的二进制数中不同的位数，各自取反public static void swap2(int[] arr,int i,int j)&#123;        if(arr[i] == arr[j])&#123;//如果arr[i]和arr[j]指向同一块内存会出错,所以干脆不交换            return;        &#125;        arr[i] = arr[i] ^ arr[j];        arr[j] = arr[j] ^ arr[i];        arr[i] = arr[i] ^ arr[ ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">62bit</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/62bit"><i class="fab fa-github"></i><span>My Github</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">江苏科技大学某不知名菜鸟的个人博客
+喜欢术力口和跳舞的准程序猿</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/26/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%85%A5/" title="数据仓库之数据接入">数据仓库之数据接入</a><time datetime="2023-02-26T07:40:30.000Z" title="发表于 2023-02-26 15:40:30">2023-02-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/23/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2Manacher%E7%AE%97%E6%B3%95/" title="算法复习：最长回文子串Manacher算法">算法复习：最长回文子串Manacher算法</a><time datetime="2023-02-23T06:36:00.000Z" title="发表于 2023-02-23 14:36:00">2023-02-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/22/%E7%88%AC%E8%99%AB%E5%88%9D%E4%BD%93%E9%AA%8C-%E7%88%AC%E5%8F%96b%E7%AB%99%E5%90%84%E5%88%86%E5%8C%BA%E8%A7%86%E9%A2%91%E4%BF%A1%E6%81%AF/" title="爬虫初体验 爬取b站各分区视频信息">爬虫初体验 爬取b站各分区视频信息</a><time datetime="2023-02-22T11:57:14.000Z" title="发表于 2023-02-22 19:57:14">2023-02-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/22/%E5%85%B3%E4%BA%8E%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%94%B5%E8%84%91%E6%91%84%E5%83%8F%E5%A4%B4%E6%98%BE%E7%A4%BA%E6%AD%A3%E5%B8%B8%E5%B7%A5%E4%BD%9C%E5%8D%B4%E6%B2%A1%E6%9C%89%E5%9B%BE%E5%83%8F%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于笔记本电脑摄像头显示正常工作却没有图像的问题">关于笔记本电脑摄像头显示正常工作却没有图像的问题</a><time datetime="2023-02-22T09:58:36.000Z" title="发表于 2023-02-22 17:58:36">2023-02-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/16/%E5%85%B3%E4%BA%8E-IntelliJ-Maven-error-Repository-is-non-nexus-repo-or-is-not-indexed-remote-update-error-%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题">关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题</a><time datetime="2023-02-16T05:55:07.000Z" title="发表于 2023-02-16 13:55:07">2023-02-16</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/05/"><span class="card-archive-list-date">五月 2022</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">11</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-26T07:53:45.285Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 62bit</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">谢谢你能够看到我!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: (str) => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: (subtitleType) => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  }
+}
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init(["谢谢你看到我!","Thank you for finding me!"])
+  } else {
+    document.getElementById("subtitle").innerHTML = '谢谢你看到我!'
+  }
+}
+typedJSFn.run(subtitleType)</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

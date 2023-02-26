@@ -1,0 +1,644 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Spark学习笔记 | 62bit的秘密基地</title><meta name="author" content="62bit"><meta name="copyright" content="62bit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="看的是极客时间的课同时结合官网 Overview - Spark 3.3.1 Documentation (apache.org) 零基础入门 Spark (geekbang.org) 基础知识01 Spark：从“大数据的Hello World”开始准备工作 IDEA安装Scala插件  构建Maven项目  pom.xml加入spark 1234567&lt;dependencies&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark学习笔记">
+<meta property="og:url" content="http://example.com/2022/11/21/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="62bit的秘密基地">
+<meta property="og:description" content="看的是极客时间的课同时结合官网 Overview - Spark 3.3.1 Documentation (apache.org) 零基础入门 Spark (geekbang.org) 基础知识01 Spark：从“大数据的Hello World”开始准备工作 IDEA安装Scala插件  构建Maven项目  pom.xml加入spark 1234567&lt;dependencies&gt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/favicon.png">
+<meta property="article:published_time" content="2022-11-21T05:45:47.000Z">
+<meta property="article:modified_time" content="2023-02-24T08:39:34.793Z">
+<meta property="article:author" content="62bit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/favicon.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/11/21/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 62bit","link":"链接: ","source":"来源: 62bit的秘密基地","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Spark学习笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-24 16:39:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="62bit的秘密基地"><span class="site-name">62bit的秘密基地</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Spark学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-21T05:45:47.000Z" title="发表于 2022-11-21 13:45:47">2022-11-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-24T08:39:34.793Z" title="更新于 2023-02-24 16:39:34">2023-02-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Spark学习笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>看的是极客时间的课同时结合官网</p>
+<p><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/">Overview - Spark 3.3.1 Documentation (apache.org)</a></p>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100090001?tab=catalog&utm_term=iTab&utm_source=iTab&utm_medium=iTab&utm_campaign=iTab&utm_content=iTab">零基础入门 Spark (geekbang.org)</a></p>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="01-Spark：从“大数据的Hello-World”开始"><a href="#01-Spark：从“大数据的Hello-World”开始" class="headerlink" title="01 Spark：从“大数据的Hello World”开始"></a>01 Spark：从“大数据的Hello World”开始</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><ol>
+<li><p>IDEA安装Scala插件</p>
+</li>
+<li><p>构建Maven项目</p>
+</li>
+<li><p>pom.xml加入spark</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.spark<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spark-core_2.12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Word-Count"><a href="#Word-Count" class="headerlink" title="Word Count"></a>Word Count</h3><h4 id="1-读取内容"><a href="#1-读取内容" class="headerlink" title="1. 读取内容"></a>1. 读取内容</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> rootPath: <span class="type">String</span> = <span class="string">&quot;xxxx&quot;</span> <span class="comment">//这里是文件所在目录</span></span><br><span class="line"><span class="keyword">val</span> file: <span class="type">String</span> = <span class="string">s&quot;<span class="subst">$rootPath</span>\\wikiOfSpark.txt&quot;</span></span><br><span class="line"><span class="keyword">val</span> sparkConf = <span class="keyword">new</span> <span class="type">SparkConf</span>()</span><br><span class="line">sparkConf.setMaster(<span class="string">&quot;local[*]&quot;</span>)   <span class="comment">//本地运行</span></span><br><span class="line">sparkConf.setAppName(<span class="string">&quot;wordCount&quot;</span>)</span><br><span class="line"><span class="keyword">val</span> lineRDD: <span class="type">RDD</span>[<span class="type">String</span>] = <span class="keyword">new</span> <span class="type">SparkContext</span>(sparkConf).textFile(file)<span class="comment">//文件中的每一行当作一个元素存入RDD</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>源码中关于SparkConf和SparkContext的说明</p>
+<p>SparkConf：Configuration for a Spark application. Used to set various Spark parameters as key-value pairs.</p>
+<p>SparkContext：Main entry point for Spark functionality. A SparkContext represents the connection to a Spark cluster, and can be used to create RDDs, accumulators and broadcast variables on that cluster.</p>
+</blockquote>
+<p>我目前理解的RDD：一个分布式元素集合，里面的元素可以通过算子转换成各种类型和结构，每个RDD都被分成不同的分区，分别在集群中的不同节点上操作</p>
+<h4 id="2-分词"><a href="#2-分词" class="headerlink" title="2. 分词"></a>2. 分词</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以行为单位做分词</span></span><br><span class="line"><span class="keyword">val</span> wordRDD: <span class="type">RDD</span>[<span class="type">String</span>] = lineRDD.flatMap(_.split(<span class="string">&quot; &quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<div class="mermaid-wrap"><pre class="mermaid-src" hidden>
+  
+graph LR
+	a[&quot;第1行，第2行，...，第n行&quot;]
+	b[&quot;[第1行第1个词，第1行第2个词，...]&lt;br&#x2F;&gt;
+		[第2行第1个词，第2行第2个词，...]&lt;br&#x2F;&gt;
+		[...]&lt;br&#x2F;&gt;
+		[第n行第1个词，第n行第2个词，...]&quot;]
+	c[&quot;第1行第1个词，第1行第2个词，...，第n行第n个词&quot;]
+	subgraph &quot;lineRDD:RDD[String]&quot;
+	a
+	end
+	subgraph &quot;RDD[Array[String]]&quot;
+	b
+	end
+	a --映射--&gt; b
+	subgraph &quot;wordRDD:RDD[String]&quot;
+	c
+	end
+	b --展平--&gt; c
+
+  </pre></div>
+
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 过滤掉空字符串</span></span><br><span class="line"><span class="keyword">val</span> cleanWordRDD: <span class="type">RDD</span>[<span class="type">String</span>] = wordRDD.filter(!_.equals(<span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-分组计数"><a href="#3-分组计数" class="headerlink" title="3. 分组计数"></a>3. 分组计数</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 把RDD元素转换为（Key，Value）的形式</span></span><br><span class="line"><span class="keyword">val</span> kvRDD: <span class="type">RDD</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = cleanWordRDD.map((_, <span class="number">1</span>)) </span><br><span class="line"></span><br><span class="line"><span class="comment">// 按照单词做分组计数</span></span><br><span class="line"><span class="keyword">val</span> wordCounts: <span class="type">RDD</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = kvRDD.reduceByKey(_ + _) </span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印词频最高的5个词汇</span></span><br><span class="line">wordCounts.map&#123;<span class="keyword">case</span> (k, v) =&gt; (v, k)&#125;.sortByKey(<span class="literal">false</span>).take(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.rdd.<span class="type">RDD</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">WordCount</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> rootPath: <span class="type">String</span> = <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">    <span class="keyword">val</span> file: <span class="type">String</span> = <span class="string">s&quot;<span class="subst">$rootPath</span>\\wikiOfSpark.txt&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> sparkConf = <span class="keyword">new</span> <span class="type">SparkConf</span>()</span><br><span class="line">    sparkConf.setMaster(<span class="string">&quot;local[*]&quot;</span>)   <span class="comment">//本地运行</span></span><br><span class="line">    sparkConf.setAppName(<span class="string">&quot;wordCount&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> lineRDD: <span class="type">RDD</span>[<span class="type">String</span>] = <span class="keyword">new</span> <span class="type">SparkContext</span>(sparkConf).textFile(file)</span><br><span class="line">    <span class="keyword">val</span> wordRDD: <span class="type">RDD</span>[<span class="type">String</span>] = lineRDD.flatMap(_.split(<span class="string">&quot; &quot;</span>))</span><br><span class="line">    <span class="keyword">val</span> cleanRDD: <span class="type">RDD</span>[<span class="type">String</span>] = wordRDD.filter(!_.equals(<span class="string">&quot;&quot;</span>))</span><br><span class="line">    <span class="keyword">val</span> kvRDD: <span class="type">RDD</span>[(<span class="type">String</span>,<span class="type">Int</span>)] = cleanRDD.map((_, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">val</span> wordCounts: <span class="type">RDD</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = kvRDD.reduceByKey(_ + _)</span><br><span class="line"></span><br><span class="line">    println(wordCounts.map &#123; <span class="keyword">case</span> (k, v) =&gt; (v, k) &#125;.sortByKey(<span class="literal">false</span>).take(<span class="number">5</span>).mkString(<span class="string">&quot;Array(&quot;</span>, <span class="string">&quot;, &quot;</span>, <span class="string">&quot;)&quot;</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自测题：</p>
+<ol>
+<li>独立完成WordCount代码的编写</li>
+<li>flatMap流程</li>
+</ol>
+<h2 id="02-RDD与编程模型：延迟计算是怎么回事？"><a href="#02-RDD与编程模型：延迟计算是怎么回事？" class="headerlink" title="02 RDD与编程模型：延迟计算是怎么回事？"></a>02 RDD与编程模型：延迟计算是怎么回事？</h2><h3 id="RDD与数组的区别"><a href="#RDD与数组的区别" class="headerlink" title="RDD与数组的区别"></a>RDD与数组的区别</h3><p>RDD是一种<strong>抽象</strong>，是Spark对于分布式数据集的抽象，它用于囊括所有内存中和磁盘中的分布式数据实体</p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>数组</th>
+<th>RDD</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>概念类型</td>
+<td>数据结构实体</td>
+<td>数据模型抽象</td>
+</tr>
+<tr>
+<td>数据跨度</td>
+<td>单机进程内</td>
+<td>跨进程、跨计算节点</td>
+</tr>
+<tr>
+<td>数据构成</td>
+<td>数组元素</td>
+<td>数据分片（Partitions）</td>
+</tr>
+<tr>
+<td>数据定位</td>
+<td>数组下标、索引</td>
+<td>数据分片索引</td>
+</tr>
+</tbody></table>
+<h3 id="RDD的四大属性"><a href="#RDD的四大属性" class="headerlink" title="RDD的四大属性"></a>RDD的四大属性</h3><ul>
+<li>partitions：数据分片，不同节点上的数据属于不同分片</li>
+<li>partitioner：分片切割规则，根据规则将数据发往不同分区</li>
+<li>dependencies：RDD依赖，RDD每种数据形态都依赖上一种形态</li>
+<li>compute：转换函数，RDD的转换方法</li>
+</ul>
+<h3 id="编程模型与延迟计算"><a href="#编程模型与延迟计算" class="headerlink" title="编程模型与延迟计算"></a>编程模型与延迟计算</h3><p><strong>每个RDD都代表着一种分布式数据形态</strong></p>
+<p><strong>RDD 到 RDD 之间的转换，本质上是数据形态上的转换（Transformations）</strong></p>
+<p>RDD算子的一个共性：RDD转换</p>
+<p>在 RDD 的编程模型中，一共有两种算子，<strong>Transformations 类算子</strong>和 <strong>Actions 类算子</strong>。开发者需要使用 Transformations 类算子，定义并描述数据形态的转换过程，然后调用 Actions 类算子，将计算结果收集起来、或是物化到磁盘。</p>
+<p>在这样的编程模型下，Spark 在运行时的计算被划分为两个环节。</p>
+<ol>
+<li>基于不同数据形态之间的转换，构建<strong>计算流图（DAG，Directed Acyclic Graph）</strong>；</li>
+<li>通过 Actions 类算子，以回溯的方式去触发执行这个计算流图。</li>
+</ol>
+<p>调用的各类 Transformations 算子，并不立即执行计算，调用 Actions 算子时，之前调用的Transformations算子才会执行，这就叫作“<strong>延迟计算</strong>”（Lazy Evaluation）。</p>
+<p><strong>所以构建计算流图的过程不会耗费很多时间，Actions算子触发执行计算流程的过程才最耗时，这也是延迟计算的一个特点</strong></p>
+<p>自测题：</p>
+<ol>
+<li>讲一下RDD</li>
+<li>延迟计算是什么意思</li>
+</ol>
+<h2 id="03-RDD常用算子（一）：RDD内部的数据转换"><a href="#03-RDD常用算子（一）：RDD内部的数据转换" class="headerlink" title="03 RDD常用算子（一）：RDD内部的数据转换"></a>03 RDD常用算子（一）：RDD内部的数据转换</h2><h3 id="创建RDD"><a href="#创建RDD" class="headerlink" title="创建RDD"></a>创建RDD</h3><p>在Spark中，创建RDD的典型方式有两种</p>
+<ul>
+<li><p>通过SparkContext.parallelize在<strong>内部数据</strong>之上创建RDD</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.rdd.<span class="type">RDD</span></span><br><span class="line"><span class="keyword">val</span> words: <span class="type">Array</span>[<span class="type">String</span>] = <span class="type">Array</span>(<span class="string">&quot;Spark&quot;</span>, <span class="string">&quot;is&quot;</span>, <span class="string">&quot;cool&quot;</span>)</span><br><span class="line"><span class="keyword">val</span> rdd: <span class="type">RDD</span>[<span class="type">String</span>] = sc.parallelize(words)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过SparkContext.textFile等API从<strong>外部数据</strong>创建RDD</p>
+</li>
+</ul>
+<p>这里的内部、外部是相对应用程序来说的。开发者在 Spark 应用中自定义的各类数据结构，如数组、列表、映射等，都属于“内部数据”；而“外部数据”指代的，是 Spark 系统之外的所有数据形式，如本地文件系统或是分布式文件系统中的数据，再比如来自其他大数据组件（Hive、Hbase、RDBMS 等）的数据。</p>
+<h3 id="map：以元素为粒度的数据转换"><a href="#map：以元素为粒度的数据转换" class="headerlink" title="map：以元素为粒度的数据转换"></a>map：以元素为粒度的数据转换</h3><p>map算子的用法：<strong>给定映射函数 f，map(f) 以元素为粒度对 RDD 做数据转换。</strong>其中 f 可以是带有明确签名的带名函数，也可以是匿名函数，<strong>它的形参类型必须与 RDD 的元素类型保持一致，而输出类型则任由开发者自行决定。</strong></p>
+<p>正因为map是以元素为粒度做数据转换的，在某些计算场景下，这个特点会严重影响执行效率</p>
+<p>例：对每个元素的哈希值计数</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.security.<span class="type">MessageDigest</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> kvRDD: <span class="type">RDD</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = cleanWordRDD.map&#123; word =&gt;</span><br><span class="line">  <span class="comment">// 获取MD5对象实例</span></span><br><span class="line">  <span class="keyword">val</span> md5 = <span class="type">MessageDigest</span>.getInstance(<span class="string">&quot;MD5&quot;</span>)</span><br><span class="line">  <span class="comment">// 使用MD5计算哈希值</span></span><br><span class="line">  <span class="keyword">val</span> hash = md5.digest(word.getBytes).mkString</span><br><span class="line">  <span class="comment">// 返回哈希值与数字1的Pair</span></span><br><span class="line">  (hash, <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要对每个元素创建一次MD5对象实例，严重影响效率</p>
+<p>这种情况就要用到mapPartitions</p>
+<h3 id="mapPartitions：以数据分区为粒度的数据转换"><a href="#mapPartitions：以数据分区为粒度的数据转换" class="headerlink" title="mapPartitions：以数据分区为粒度的数据转换"></a>mapPartitions：以数据分区为粒度的数据转换</h3><p>还是同样的例子：对每个元素的哈希值计数</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.security.<span class="type">MessageDigest</span> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">val</span> kvRDD: <span class="type">RDD</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = cleanWordRDD.mapPartitions( partition =&gt; &#123;</span><br><span class="line">  <span class="comment">// 注意！这里是以数据分区为粒度，获取MD5对象实例</span></span><br><span class="line">  <span class="keyword">val</span> md5 = <span class="type">MessageDigest</span>.getInstance(<span class="string">&quot;MD5&quot;</span>)</span><br><span class="line">  <span class="keyword">val</span> newPartition = partition.map( word =&gt; &#123;</span><br><span class="line">  <span class="comment">// 在处理每一条数据记录的时候，可以复用同一个Partition内的MD5对象</span></span><br><span class="line">    (md5.digest(word.getBytes()).mkString,<span class="number">1</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  newPartition</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>同一个分区的数据，可以共享同一个MD5对象</p>
+<p><img src="https://static001.geekbang.org/resource/image/c7/8d/c76be8ff89f1c37e52e9f17b66bf398d.jpg?wh=1920x779"></p>
+<h3 id="flatMap：从元素到集合、再从集合到元素"><a href="#flatMap：从元素到集合、再从集合到元素" class="headerlink" title="flatMap：从元素到集合、再从集合到元素"></a>flatMap：从元素到集合、再从集合到元素</h3><p>flatMap的映射过程在逻辑上分为两步：</p>
+<ol>
+<li>以元素为单位，创建集合</li>
+<li>去掉集合“外包装”，提取集合元素</li>
+</ol>
+<p>可以结合01 wordcount中的分词部分理解</p>
+<p>例子：统计相邻单词共同出现的次数</p>
+<p>如：Spark is cool –&gt; (Spark is, 1)  (is cool, 1) </p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">AdjacentWordsCount</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> rootPath = <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">    <span class="keyword">val</span> file = <span class="string">s&quot;<span class="subst">$rootPath</span>\\wikiOfSpark.txt&quot;</span></span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">&quot;local[*]&quot;</span>).setAppName(<span class="string">&quot;AdjacentWordsCount&quot;</span>)</span><br><span class="line">    <span class="keyword">val</span> lineRDD = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf).textFile(file)</span><br><span class="line">    <span class="keyword">val</span> adjacentRDD = lineRDD.flatMap(line =&gt; &#123;</span><br><span class="line">      <span class="keyword">val</span> words = line.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">      <span class="keyword">for</span>(i &lt;- <span class="number">0</span> until words.length - <span class="number">1</span>) <span class="keyword">yield</span> words(i) + <span class="string">&quot;-&quot;</span> + words(i + <span class="number">1</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">val</span> kvRDD = adjacentRDD.map((_,<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">val</span> resRDD = kvRDD.reduceByKey(_ + _)</span><br><span class="line">    println(resRDD.map &#123; <span class="keyword">case</span> (k, v) =&gt; (v, k) &#125;.sortByKey(<span class="literal">false</span>).take(<span class="number">5</span>).mkString(<span class="string">&quot;Array(&quot;</span>, <span class="string">&quot;, &quot;</span>, <span class="string">&quot;)&quot;</span>))</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以用一些正则表达式</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按空格、标点符号、数学符号、数字分割</span></span><br><span class="line"><span class="keyword">val</span> wordRDD: <span class="type">RDD</span>[<span class="type">String</span>] = lineRDD.flatMap(_.split(<span class="string">&quot;[ ]|\\pP|\\pS|\\pN&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="filter：过滤RDD"><a href="#filter：过滤RDD" class="headerlink" title="filter：过滤RDD"></a>filter：过滤RDD</h3><p>filter，顾名思义，这个算子的作用，是对 RDD 进行过滤。就像是 map 算子依赖其映射函数一样，filter 算子也需要借助一个判定函数 f，才能实现对 RDD 的过滤转换。</p>
+<p>所谓判定函数，它指的是类型为（RDD 元素类型） &#x3D;&gt; （Boolean）的函数。可以看到，判定函数 f 的形参类型，必须与 RDD 的元素类型保持一致，而 f 的返回结果，只能是 True 或者 False。在任何一个 RDD 之上调用 filter(f)，其作用是保留 RDD 中满足 f（也就是 f 返回 True）的数据元素，而过滤掉不满足 f（也就是 f 返回 False）的数据元素。</p>
+<p>还是上面的例子，这次要把像“Spark-&amp;”之类的词对过滤掉</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">AdjacentWordsCount</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> rootPath = <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">    <span class="keyword">val</span> file = <span class="string">s&quot;<span class="subst">$rootPath</span>\\wikiOfSpark.txt&quot;</span></span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">&quot;local[*]&quot;</span>).setAppName(<span class="string">&quot;AdjacentWordsCount&quot;</span>)</span><br><span class="line">    <span class="keyword">val</span> lineRDD = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf).textFile(file)</span><br><span class="line">    <span class="keyword">val</span> adjacentRDD = lineRDD.flatMap(line =&gt; &#123;</span><br><span class="line">      <span class="keyword">val</span> words = line.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">      <span class="keyword">for</span>(i &lt;- <span class="number">0</span> until words.length - <span class="number">1</span>) <span class="keyword">yield</span> words(i) + <span class="string">&quot;-&quot;</span> + words(i + <span class="number">1</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//================filter====================</span></span><br><span class="line">    <span class="keyword">val</span> list = <span class="type">List</span>(<span class="string">&quot;&quot;</span>,<span class="string">&quot;!&quot;</span>,<span class="string">&quot;@&quot;</span>,<span class="string">&quot;#&quot;</span>,<span class="string">&quot;$&quot;</span>,<span class="string">&quot;%&quot;</span>,<span class="string">&quot;^&quot;</span>,<span class="string">&quot;&amp;&quot;</span>,<span class="string">&quot;*&quot;</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f</span></span>(s: <span class="type">String</span>) = &#123;</span><br><span class="line">      <span class="keyword">val</span> words = s.split(<span class="string">&quot;-&quot;</span>)</span><br><span class="line">      <span class="keyword">val</span> b1 = list.contains(words(<span class="number">0</span>))</span><br><span class="line">      <span class="keyword">val</span> b2 = list.contains(words(<span class="number">1</span>))</span><br><span class="line">      !b1 &amp;&amp; !b2</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">val</span> kvRDD = adjacentRDD.filter(f).map((_,<span class="number">1</span>))</span><br><span class="line">    <span class="comment">//==========================================</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> resRDD = kvRDD.reduceByKey(_ + _)</span><br><span class="line">    println(resRDD.map &#123; <span class="keyword">case</span> (k, v) =&gt; (v, k) &#125;.sortByKey(<span class="literal">false</span>).take(<span class="number">5</span>).mkString(<span class="string">&quot;Array(&quot;</span>, <span class="string">&quot;, &quot;</span>, <span class="string">&quot;)&quot;</span>))</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自测题：</p>
+<ol>
+<li>SparkContext.parallelize和SparkContext.textFile的区别</li>
+<li>map和mapPartitions的区别</li>
+<li>四个算子的传入的形参各有什么特点</li>
+</ol>
+<h2 id="04-进程模型与分布式部署：分布式计算是怎么回事？"><a href="#04-进程模型与分布式部署：分布式计算是怎么回事？" class="headerlink" title="04 进程模型与分布式部署：分布式计算是怎么回事？"></a>04 进程模型与分布式部署：分布式计算是怎么回事？</h2><p>分布式计算的精髓，在于如何把抽象的计算流图，转化为实实在在的分布式计算任务，然后以并行计算的方式交付执行</p>
+<p>Spark实现分布式计算的两个关键要素：<strong>进程模型</strong>和<strong>分布式部署</strong></p>
+<h3 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h3><h4 id="Dirver与Executor"><a href="#Dirver与Executor" class="headerlink" title="Dirver与Executor"></a>Dirver与Executor</h4><p>任何一个Spark应用程序的入口，都是带有SparkSession的main函数，在Spark分布式计算环境中，有且仅有一个JVM进程运行这样的main函数，称为<strong>Dirver</strong></p>
+<p>Dirver构建计算流图，然后将计算流图转化为分布式任务，并把分布式任务分发给集群中的执行进程<strong>Executor</strong>交付运行</p>
+<p>Driver 除了分发任务之外，还需要定期与每个 Executor 进行沟通，及时获取他们的工作进展，从而协调整体的执行进度。</p>
+<p>在Spark的Dirver进程中，<strong>DAGScheduler</strong>、<strong>TaskScheduler</strong>和<strong>SchedulerBackend</strong>依次完成分布式任务调度的三个核心步骤：</p>
+<ol>
+<li>DAGScheduler：根据用户代码构建计算流图</li>
+<li>TaskScheduler：根据计算流图拆解出分布式任务</li>
+<li>SchedulerBackend：将分布式任务分发到Executors中去</li>
+</ol>
+<p>接收到任务之后，Executors 调用内部线程池，结合事先分配好的数据分片，并发地执行任务代码。对于一个完整的 RDD，每个 Executors 负责处理这个 RDD 的一个数据分片子集。</p>
+<h4 id="master"><a href="#master" class="headerlink" title="master"></a>master</h4><p>Spark shell命令中的master用于指定部署模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-shell --master local[*]</span><br></pre></td></tr></table></figure>
+
+<h4 id="分布式任务（以word-count为例）"><a href="#分布式任务（以word-count为例）" class="headerlink" title="分布式任务（以word count为例）"></a>分布式任务（以word count为例）</h4><p>步骤：</p>
+<ol>
+<li><p>word count中用到了textFile、flatMap、filter、map、reduceByKey等算子，其中textFile、flatMap、filter和map都可以在单个Executor中独立完成，所以Dirver会先将这几个算子捏合成一个任务，打包发给每个Executor</p>
+</li>
+<li><p>每个Executor收到这个任务后，再将任务拆解成原本的四个步骤，分别对自己负责的数据分片按顺序执行这些步骤</p>
+</li>
+<li><p>每个Executor执行完任务后会向Dirver汇报自己的工作进展</p>
+</li>
+<li><p>在执行reduceByKey这个任务之前，会进行shuffle操作</p>
+<blockquote>
+<p>因为reduceByKey需要按照Key值将Value值进行统计计数，而相同的Key值很可能分布在不同的数据分片中，shuffle的过程就是把相同的Key聚合到同一个数据分片的过程</p>
+</blockquote>
+</li>
+<li><p>执行完shuffle操作，Driver会分发reduceByKey的任务，Executors会把最终的计算结果统一返回给Driver</p>
+</li>
+</ol>
+<h3 id="分布式环境部署"><a href="#分布式环境部署" class="headerlink" title="分布式环境部署"></a>分布式环境部署</h3><p>Spark的两种部署模式：本地部署 和 分布式部署</p>
+<p>Spark支持多种分布式部署模式：Standalone或YARN等</p>
+<h4 id="Standalone模式"><a href="#Standalone模式" class="headerlink" title="Standalone模式"></a>Standalone模式</h4><p>Standalone <strong>在资源调度层面</strong>，采用了一主多从的主从架构，把计算节点的角色分为 Master 和 Worker。其中，Master 有且只有一个，而 Worker 可以有一到多个。所有 Worker 节点周期性地向 Master 汇报本节点可用资源状态，Master 负责汇总、变更、管理集群中的可用资源，并对 Spark 应用程序中 Driver 的资源请求作出响应。</p>
+<p>Standalone <strong>在计算层面</strong>，就是用上述的Driver和Executors进程模型进行任务的执行</p>
+<blockquote>
+<p>摘自评论区：</p>
+<p>提问：</p>
+<p>老师好！讲解很精彩！ 为了帮助大家理解，还是要说说 standalone 模式下的 主从选举过程，三个节点怎么互相找到并选出主从。另外，standalone 模式下的 master 和 worker，与前面进程模型里说的 Driver 和 executor，二组之间的对应关系，也要讲讲。只要能简单串起来就可以了。让大家获得一个即便简单、但却完成的理解模型。</p>
+<p>作者回复: </p>
+<p>感谢老弟，问题提得很好~  </p>
+<p>先说说选主，这个其实比较简单，Standalone部署模式下，Master与Worker角色，这个是我们通过配置文件，事先配置好的，所以说，哪台是Master，哪台是Worker，这个配置文件里面都有。在Standalone部署下，先启动Master，然后启动Worker，由于配置中有Master的连接地址，所以Worker启动的时候，会自动去连接Master，然后双方建立心跳机制，随后集群进入ready状态。 </p>
+<p>接下来说Master、Worker与Driver、Executors的关系。首先，这4个“家伙”，都是JVM进程。不过呢，他们的定位和角色，是完全不一样的。Master、Worker用来做资源的调度与分配，你可以这样理解，这两个家伙，只负责维护集群中可用硬件资源的状态。换句话说，Worker记录着每个计算节点可用CPU cores、可用内存，等等。而Master从Worker收集并汇总所有集群中节点的可用计算资源。 </p>
+<p>Driver和Executors的角色，那就纯是Spark应用级别的进程了。这个咱们课程有介绍，就不赘述了。Driver、Executors的计算资源，全部来自于Master的调度。一般来说，Driver会占用Master所在节点的资源；而Executors一般占用Worker所在节点的计算资源。一旦Driver、Executors从Master、Worker那里申请到资源之后，Driver、Executors就不再“鸟”Master和Worker了，因为资源已经到手了，后续就是任务调度的范畴。任务调度课程中也有详细的介绍，老弟可以关注下~ 大概其就是这么些关系，不知道对老弟是否有所帮助~</p>
+</blockquote>
+<h4 id="Standalone分布式部署快速入门"><a href="#Standalone分布式部署快速入门" class="headerlink" title="Standalone分布式部署快速入门"></a>Standalone分布式部署快速入门</h4><ol>
+<li><p>配置ssh免密登陆</p>
+<p>将master的公钥追加到workers的authorized_keys文件</p>
+</li>
+<li><p>JAVA和Spark环境搭建</p>
+<p>安装JAVA和Spark，配置环境变量</p>
+</li>
+<li><p>配置ip地址与域名对</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts</span><br><span class="line"></span><br><span class="line">&lt;node1 ip地址&gt; node1</span><br><span class="line">&lt;node2 ip地址&gt; node2</span><br><span class="line">&lt;node3 ip地址&gt; node3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动Master和Workers</p>
+<p>修改Master的spark-defaults.conf配置文件，设置Master URL</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark.master  spark://node1:7077</span><br></pre></td></tr></table></figure>
+
+<p>启动Master和Workers</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">master</span></span><br><span class="line">sbin/start-master.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">workers</span></span><br><span class="line">sbin/start-worker.sh node1:7077</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行spark自带的demo</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MASTER=spark://node1:7077 $SPARK_HOME/bin/run-example org.apache.spark.examples.SparkPi</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>自测题：</p>
+<ol>
+<li>分布式任务执行的步骤</li>
+<li>Worker和Master、Driver和Executor的联系与区别</li>
+</ol>
+<h2 id="05-调度系统：如何把握分布式计算的精髓"><a href="#05-调度系统：如何把握分布式计算的精髓" class="headerlink" title="05 调度系统：如何把握分布式计算的精髓"></a>05 调度系统：如何把握分布式计算的精髓</h2><p>分布式计算的精髓，在于如何把抽象的计算图，转化为实实在在的分布式计算任务，然后以并行计算的方式交付执行</p>
+<table>
+<thead>
+<tr>
+<th>步骤序号</th>
+<th>调度系统关键步骤</th>
+<th>所在进程</th>
+<th>核心组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>将DAG(计算流图)拆分为不同的运行阶段，即Stages；根据Stages创建分布式任务Tasks和任务组TaskSets</td>
+<td>Driver</td>
+<td>DAGScheduler</td>
+</tr>
+<tr>
+<td>2</td>
+<td>获取集群内可用计算资源</td>
+<td>Driver</td>
+<td>SchedulerBackend</td>
+</tr>
+<tr>
+<td>3</td>
+<td>按照调度规则决定任务优先级，完成任务调度</td>
+<td>Driver</td>
+<td>TaskScheduler</td>
+</tr>
+<tr>
+<td>4</td>
+<td>依序将分布式任务分发到Executors</td>
+<td>Driver</td>
+<td>SchedulerBackend</td>
+</tr>
+<tr>
+<td>5</td>
+<td>并发执行接收到的分布式计算任务</td>
+<td>Executors</td>
+<td>ExecutorBackend</td>
+</tr>
+</tbody></table>
+<p>SchedulerBackend可以理解为资源管理器（Standalone、YARN等），用于分配资源，分发任务</p>
+<blockquote>
+<p>简而言之，DAGScheduler 手里有“活儿”，SchedulerBackend 手里有“人力”，TaskScheduler 的核心职能，就是把合适的“活儿”派发到合适的“人”的手里。由此可见，TaskScheduler 承担的是承上启下、上通下达的关键角色</p>
+</blockquote>
+<p>Spark 调度系统的核心思想，是“数据不动、代码动”</p>
+<p>任务调度分为如下 5 个步骤：</p>
+<ol>
+<li>DAGScheduler 以 Shuffle 为边界，将开发者设计的计算图 DAG 拆分为多个执行阶段 Stages，然后为每个 Stage 创建任务集 TaskSet。</li>
+<li>SchedulerBackend 通过与 Executors 中的 ExecutorBackend 的交互来实时地获取集群中可用的计算资源，并将这些信息记录到 ExecutorDataMap 数据结构。</li>
+<li>与此同时，SchedulerBackend 根据 ExecutorDataMap 中可用资源创建 WorkerOffer，以 WorkerOffer 为粒度提供计算资源。</li>
+<li>对于给定 WorkerOffer，TaskScheduler 结合 TaskSet 中任务的<strong>本地性倾向</strong>，按照 PROCESS_LOCAL、NODE_LOCAL、RACK_LOCAL 和 ANY 的顺序，依次对 TaskSet 中的任务进行遍历，优先调度本地性倾向要求苛刻的 Task。</li>
+<li>被选中的 Task 由 TaskScheduler 传递给 SchedulerBackend，再由 SchedulerBackend 分发到 Executors 中的 ExecutorBackend。Executors 接收到 Task 之后，即调用本地线程池来执行分布式任务。</li>
+</ol>
+<p>自测题：</p>
+<ol>
+<li>说一下DAGScheduler、SchedulerBackend、TaskScheduler、ExecutorBackend</li>
+<li>任务调度的步骤</li>
+</ol>
+<h2 id="06-Shuffle管理：为什么shuffle是性能瓶颈"><a href="#06-Shuffle管理：为什么shuffle是性能瓶颈" class="headerlink" title="06 Shuffle管理：为什么shuffle是性能瓶颈"></a>06 Shuffle管理：为什么shuffle是性能瓶颈</h2><p>Shuffle 的本意是扑克的“洗牌”，在分布式计算场景中，它被引申为集群范围内跨节点、跨进程的数据分发</p>
+<p>Shuffle 的过程中，分布式数据集在集群内的分发，会引入大量的磁盘 I&#x2F;O 与网络 I&#x2F;O。在 DAG 的计算链条中，Shuffle 环节的执行性能是最差的。</p>
+<div class="mermaid-wrap"><pre class="mermaid-src" hidden>
+  graph LR
+Map--&gt;Shuffle--&gt;Reduce
+  </pre></div>
+
+<p>shuffle是map和reduce的中间阶段，将不同的数据分发到不同的节点</p>
+<h3 id="shuffle中间文件"><a href="#shuffle中间文件" class="headerlink" title="shuffle中间文件"></a>shuffle中间文件</h3><p>Map 阶段与 Reduce 阶段，通过<strong>生产</strong>与<strong>消费</strong> Shuffle 中间文件的方式，来完成集群范围内的数据交换</p>
+<p>Shuffle 中间文件是统称，它包含两类文件，一个是记录（Key，Value）键值对的 data 文件，另一个是记录键值对所属 Reduce Task 的 index 文件。计算图 DAG 中的 Map 阶段与 Reduce 阶段，正是通过中间文件来完成数据的交换。</p>
+<p>Shuffle 中间文件的生成过程，分为如下几个步骤：</p>
+<ol>
+<li>对于数据分区中的数据记录，逐一计算(哈希取模)其目标分区，然后填充内存数据结构；</li>
+<li>当数据结构填满后，如果分区中还有未处理的数据记录，就对结构中的数据记录按（目标分区 ID，Key）排序，将所有数据溢出到临时文件，同时清空数据结构；</li>
+<li>重复前 2 个步骤，直到分区中所有的数据记录都被处理为止；</li>
+<li>对所有临时文件和内存数据结构中剩余的数据记录做归并排序，生成数据文件(data)和索引文件(index)。</li>
+</ol>
+<p>最后，在 Reduce 阶段，Reduce Task 通过 index 文件来“定位”属于自己的数据内容，并通过网络从不同节点的 data 文件中下载属于自己的数据记录。</p>
+<p>自测题：</p>
+<ol>
+<li>什么是shuffle中间文件</li>
+<li>shuffle中间文件的生成过程</li>
+</ol>
+<h2 id="07-RDD常用算子（二）：Spark如何实现数据聚合"><a href="#07-RDD常用算子（二）：Spark如何实现数据聚合" class="headerlink" title="07 RDD常用算子（二）：Spark如何实现数据聚合"></a>07 RDD常用算子（二）：Spark如何实现数据聚合</h2><ul>
+<li>算子类型：Transformations</li>
+<li><strong>适用范围：Paired RDD（kvRDD）</strong></li>
+<li>算子用途：RDD内数据聚合</li>
+<li>算子集合：groupByKey、sortByKey、reduceByKey、aggregateByKey</li>
+<li><strong>特点：会引入繁重的Shuffle计算</strong></li>
+</ul>
+<h3 id="groupByKey：分组收集"><a href="#groupByKey：分组收集" class="headerlink" title="groupByKey：分组收集"></a>groupByKey：分组收集</h3><p>RDD[(Key, Value)] —&gt; RDD[(Key, Value集合)]</p>
+<p>使用场景较少</p>
+<h3 id="reduceByKey：分组聚合"><a href="#reduceByKey：分组聚合" class="headerlink" title="reduceByKey：分组聚合"></a>reduceByKey：分组聚合</h3><p>reduceByKey函数需要传入一个聚合函数f</p>
+<blockquote>
+<p>需要强调的是，给定 RDD[(Key 类型，Value 类型)]，聚合函数 f 的类型，必须是（Value 类型，Value 类型） &#x3D;&gt; （Value 类型）。换句话说，函数 f 的形参，必须是两个数值，且数值的类型必须与 Value 的类型相同，而 f 的返回值，也必须是 Value 类型的数值。</p>
+</blockquote>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">某个kvRDD.reduceByKey((<span class="type">Value</span> 类型，<span class="type">Value</span> 类型) =&gt; (<span class="type">Value</span> 类型))</span><br></pre></td></tr></table></figure>
+
+<p>练习：把 Word Count 的计算逻辑，改为随机赋值、提取同一个 Key 的最大值。也就是在 kvRDD 的生成过程中，我们不再使用映射函数 word &#x3D;&gt; (word, 1)，而是改为 word &#x3D;&gt; (word, 随机数)，然后再使用 reduceByKey 算子来计算同一个 word 当中最大的那个随机数。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.util.<span class="type">Random</span>._</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> kvRDD = cleanWordRDD.map((_, nextInt(<span class="number">100</span>)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> wordCounts = kvRDD.reduceByKey(math.max)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Map端聚合：在每个节点内部先聚合</li>
+<li>Reduce端聚合：数据经由网络分发之后，在 Reduce 阶段完成的聚合</li>
+</ul>
+<blockquote>
+<p><strong>reduceByKey 算子的局限性，在于其 Map 阶段与 Reduce 阶段的计算逻辑必须保持一致，这个计算逻辑统一由聚合函数 f 定义。</strong>当一种计算场景需要在两个阶段执行不同计算逻辑的时候，reduceByKey 就爱莫能助了。</p>
+</blockquote>
+<h3 id="aggregateByKey：更加灵活的聚合算子"><a href="#aggregateByKey：更加灵活的聚合算子" class="headerlink" title="aggregateByKey：更加灵活的聚合算子"></a>aggregateByKey：更加灵活的聚合算子</h3><p>aggregateByKey算子需要三个参数，分别对应初始值、Map端聚合函数和Reduce端聚合函数，可以实现在两个阶段执行不同的计算逻辑</p>
+<blockquote>
+<p>就这 3 个参数来说，比较伤脑筋的，是它们之间的类型需要保持一致，具体来说：</p>
+<ul>
+<li>初始值类型，必须与 f2 的结果类型保持一致；</li>
+<li>f1 的形参类型，必须与 Paired RDD 的 Value 类型保持一致；</li>
+<li>f2 的形参类型，必须与 f1 的结果类型保持一致。</li>
+</ul>
+</blockquote>
+<p>练习：map端求和，reduce端求最值</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> wordCounts = kvRDD.aggregateByKey(<span class="number">0</span>)(_ + _, math.max)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>与 reduceByKey 一样，aggregateByKey 也可以通过 Map 端的初步聚合来大幅削减数据量，在降低磁盘与网络开销的同时，提升 Shuffle 环节的执行性能。</p>
+</blockquote>
+<blockquote>
+<p>摘自评论区：</p>
+<p>reduceByKey和aggregateByKey的联系和区别：</p>
+<p>reduceByKey和aggregateByKey底层实现完全相同，都是combineByKeyWithClassTag，只不过reduceByKey调用 combineByKeyWithClassTag的入参mergeValue和mergeCombiners是相等的，aggregateByKey是用户指定可以不等的，也就是说reduceByKey是一种特殊的aggregateByKey。</p>
+</blockquote>
+<h3 id="sortByKey：排序"><a href="#sortByKey：排序" class="headerlink" title="sortByKey：排序"></a>sortByKey：排序</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按照Key升序排序</span></span><br><span class="line">rdd.sortByKey()</span><br><span class="line">rdd.sortByKey(<span class="literal">true</span>)</span><br><span class="line"><span class="comment">//降序</span></span><br><span class="line">rdd.sortByKey(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="08-内存管理：Spark如何使用内存"><a href="#08-内存管理：Spark如何使用内存" class="headerlink" title="08 内存管理：Spark如何使用内存"></a>08 内存管理：Spark如何使用内存</h2><table>
+<thead>
+<tr>
+<th>Spark内存区域划分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Execution Memory &lt;—相互转化—&gt;Storage Memory</td>
+</tr>
+<tr>
+<td>User Memory</td>
+</tr>
+<tr>
+<td>Reserved Memory (300MB)</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Reserved Memory：固定300MB，是Spark预留的、用来存储各种Spark内部对象的内存区域</li>
+<li>User Memory：用于存储开发者自定义的数据结构</li>
+<li>Execution Memory：用来执行分布式任务</li>
+<li>Storage Memory：缓存分布式数据集</li>
+</ul>
+<h3 id="RDD-Cache"><a href="#RDD-Cache" class="headerlink" title="RDD Cache"></a>RDD Cache</h3><blockquote>
+<p>当同一个 RDD 被引用多次时，就可以考虑对其进行 Cache，从而提升作业的执行效率。</p>
+</blockquote>
+<p>例如：调用两次wordCounts(RDD)</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 按照单词做分组计数</span></span><br><span class="line"><span class="keyword">val</span> wordCounts: <span class="type">RDD</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = kvRDD.reduceByKey((x, y) =&gt; x + y)</span><br><span class="line"> </span><br><span class="line">wordCounts.cache<span class="comment">// 使用cache算子告知Spark对wordCounts加缓存</span></span><br><span class="line">wordCounts.count<span class="comment">// 触发wordCounts的计算，并将wordCounts缓存到内存</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 打印词频最高的5个词汇</span></span><br><span class="line">wordCounts.map&#123;<span class="keyword">case</span> (k, v) =&gt; (v, k)&#125;.sortByKey(<span class="literal">false</span>).take(<span class="number">5</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 将分组计数结果落盘到文件</span></span><br><span class="line"><span class="keyword">val</span> targetPath: <span class="type">String</span> = _</span><br><span class="line">wordCounts.saveAsTextFile(targetPath)</span><br></pre></td></tr></table></figure>
+
+<p>下面两句等价</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wordCounts.cache</span><br><span class="line">wordCounts.persist(<span class="type">MEMORY_ONLY</span>)</span><br></pre></td></tr></table></figure>
+
+<p>persist()括号里填写存储级别</p>
+<p>Spark支持丰富的存储级别，每一种存储级别都包含3个最基本的要素</p>
+<ul>
+<li>存储介质：数据缓存到内存还是磁盘，或是两者都有</li>
+<li>存储形式：数据内容是对象值还是字节数组，带SER字样的表示以序列化方式存储，不带SER则表示采用对象值</li>
+<li>副本数量：存储级别名字最后的数字代表拷贝数量，没有数字默认为1份副本</li>
+</ul>
+<p><img src="https://static001.geekbang.org/resource/image/d7/b7/d7f15c0f7679777ec237c6a02f11c7b7.jpg?wh=1821x1192"></p>
+<h2 id="09-RDD常用算子（三）：数据的准备、重分布与持久化"><a href="#09-RDD常用算子（三）：数据的准备、重分布与持久化" class="headerlink" title="09 RDD常用算子（三）：数据的准备、重分布与持久化"></a>09 RDD常用算子（三）：数据的准备、重分布与持久化</h2><table>
+<thead>
+<tr>
+<th>数据加载</th>
+<th>数据准备</th>
+<th>数据预处理</th>
+<th>数据处理</th>
+<th>接过结果收集</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>parallelize<br>textFile</td>
+<td>union<br>sample</td>
+<td>coalesce<br>repartition</td>
+<td>flatMap<br>map<br>filter<br>sortByKey<br>reduceByKey<br>aggregateByKey</td>
+<td>take<br>first<br>collect<br>saveAsTextFile</td>
+</tr>
+</tbody></table>
+<h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><h4 id="union"><a href="#union" class="headerlink" title="union"></a>union</h4><p>将两个类型一致的RDD合并</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> rdd = rdd1.union(rdd2)</span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line"><span class="keyword">val</span> rdd = rdd1 union rdd2</span><br></pre></td></tr></table></figure>
+
+<h4 id="sample"><a href="#sample" class="headerlink" title="sample"></a>sample</h4><p>RDD 的 sample 算子用于对 RDD 做<strong>随机采样</strong>，从而把一个较大的数据集变为一份“小数据”</p>
+<p>三个参数：</p>
+<ul>
+<li>withReplacement（Boolean类型）：采样是否有放回</li>
+<li>fraction（Double类型，值域为0到1）：采样比例</li>
+<li>seed（Long类型，可选参数）：根据seed随机抽取，相同的seed采样结果是相同的</li>
+</ul>
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>并行度：RDD的数据分区数量，对应RDD的partitions属性</p>
+<h4 id="repartition"><a href="#repartition" class="headerlink" title="repartition"></a>repartition</h4><p>用来调整RDD并行度</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> rdd1 = rdd.repartition(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>RDD 的并行度，很大程度上决定了分布式系统中 CPU 的使用效率，进而还会影响分布式系统并行计算的执行效率。并行度过高或是过低，都会降低 CPU 利用率，从而白白浪费掉宝贵的分布式计算资源，因此，合理有效地设置 RDD 并行度，至关重要。</p>
+</blockquote>
+<p>repartition算子会引入shuffle</p>
+<h4 id="coalesce"><a href="#coalesce" class="headerlink" title="coalesce"></a>coalesce</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> rdd1 = rdd.coalesce(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>coalesce算子不会引入shuffle</p>
+<ul>
+<li>增加并行度只能用reparation</li>
+<li>降低并行度用coalesce</li>
+</ul>
+<blockquote>
+<p>摘自官网：</p>
+<p>coalesce：Decrease the number of partitions in the RDD to numPartitions. Useful for running operations more efficiently after filtering down a large dataset.</p>
+<p>reparation： Reshuffle the data in the RDD randomly to create either more or fewer partitions and balance it across them. This always shuffles all data over the network.</p>
+</blockquote>
+<h3 id="结果收集"><a href="#结果收集" class="headerlink" title="结果收集"></a>结果收集</h3><h4 id="first、take和collect"><a href="#first、take和collect" class="headerlink" title="first、take和collect"></a>first、take和collect</h4><blockquote>
+<p>摘自官网：</p>
+<p>first：Return the first element of the dataset (similar to take(1)).</p>
+<p>take：Return an array with the first <em>n</em> elements of the dataset.</p>
+<p>collect：Return all the elements of the dataset as an array at the driver program. This is usually useful after a filter or other operation that returns a sufficiently small subset of the data.</p>
+</blockquote>
+<p>collect 算子有两处性能隐患，一个是拉取数据过程中引入的网络开销，另一个 Driver 的 OOM（内存溢出，Out of Memory）。</p>
+<h4 id="saveAsTextFile"><a href="#saveAsTextFile" class="headerlink" title="saveAsTextFile"></a>saveAsTextFile</h4><blockquote>
+<p>摘自官网：</p>
+<p>Write the elements of the dataset as a text file (or set of text files) in a given directory in the local filesystem, HDFS or any other Hadoop-supported file system. Spark will call toString on each element to convert it to a line of text in the file.</p>
+</blockquote>
+<p>以 saveAsTextFile 为代表的算子，直接通过 Executors 将 RDD 数据分区物化到文件系统，这个过程并不涉及与 Driver 端的任何交互。</p>
+<p>由于数据的持久化与 Driver 无关，因此这类算子天然地避开了 collect 算子带来的两个性能隐患。</p>
+<h2 id="10-广播变量-amp-累加器：共享变量是用来做什么的？"><a href="#10-广播变量-amp-累加器：共享变量是用来做什么的？" class="headerlink" title="10 广播变量 &amp; 累加器：共享变量是用来做什么的？"></a>10 广播变量 &amp; 累加器：共享变量是用来做什么的？</h2><p>按照创建与使用方式的不同，Spark 提供了两类共享变量，分别是广播变量（Broadcast variables）和累加器（Accumulators）。</p>
+<h3 id="广播变量（Broadcast-variables）"><a href="#广播变量（Broadcast-variables）" class="headerlink" title="广播变量（Broadcast variables）"></a>广播变量（Broadcast variables）</h3></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">62bit</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/21/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">http://example.com/2022/11/21/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">62bit的秘密基地</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/favicon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/07/Kaggle%E7%BB%83%E4%B9%A0-Spark%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/" title="Kaggle练习:Spark房价预测"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Kaggle练习:Spark房价预测</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/16/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="算法学习笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">算法学习笔记</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">62bit</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/62bit"><i class="fab fa-github"></i><span>My Github</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">江苏科技大学某不知名菜鸟的个人博客
+喜欢术力口和跳舞的准程序猿</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#01-Spark%EF%BC%9A%E4%BB%8E%E2%80%9C%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84Hello-World%E2%80%9D%E5%BC%80%E5%A7%8B"><span class="toc-number">1.1.</span> <span class="toc-text">01 Spark：从“大数据的Hello World”开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.1.1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Word-Count"><span class="toc-number">1.1.2.</span> <span class="toc-text">Word Count</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%AF%BB%E5%8F%96%E5%86%85%E5%AE%B9"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">1. 读取内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%86%E8%AF%8D"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">2. 分词</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%88%86%E7%BB%84%E8%AE%A1%E6%95%B0"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">3. 分组计数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">完整代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#02-RDD%E4%B8%8E%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%9A%E5%BB%B6%E8%BF%9F%E8%AE%A1%E7%AE%97%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">02 RDD与编程模型：延迟计算是怎么回事？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDD%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.1.</span> <span class="toc-text">RDD与数组的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDD%E7%9A%84%E5%9B%9B%E5%A4%A7%E5%B1%9E%E6%80%A7"><span class="toc-number">1.2.2.</span> <span class="toc-text">RDD的四大属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%BB%B6%E8%BF%9F%E8%AE%A1%E7%AE%97"><span class="toc-number">1.2.3.</span> <span class="toc-text">编程模型与延迟计算</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#03-RDD%E5%B8%B8%E7%94%A8%E7%AE%97%E5%AD%90%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9ARDD%E5%86%85%E9%83%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">03 RDD常用算子（一）：RDD内部的数据转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BARDD"><span class="toc-number">1.3.1.</span> <span class="toc-text">创建RDD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map%EF%BC%9A%E4%BB%A5%E5%85%83%E7%B4%A0%E4%B8%BA%E7%B2%92%E5%BA%A6%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.3.2.</span> <span class="toc-text">map：以元素为粒度的数据转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mapPartitions%EF%BC%9A%E4%BB%A5%E6%95%B0%E6%8D%AE%E5%88%86%E5%8C%BA%E4%B8%BA%E7%B2%92%E5%BA%A6%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.3.3.</span> <span class="toc-text">mapPartitions：以数据分区为粒度的数据转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flatMap%EF%BC%9A%E4%BB%8E%E5%85%83%E7%B4%A0%E5%88%B0%E9%9B%86%E5%90%88%E3%80%81%E5%86%8D%E4%BB%8E%E9%9B%86%E5%90%88%E5%88%B0%E5%85%83%E7%B4%A0"><span class="toc-number">1.3.4.</span> <span class="toc-text">flatMap：从元素到集合、再从集合到元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#filter%EF%BC%9A%E8%BF%87%E6%BB%A4RDD"><span class="toc-number">1.3.5.</span> <span class="toc-text">filter：过滤RDD</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#04-%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E9%83%A8%E7%BD%B2%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B%EF%BC%9F"><span class="toc-number">1.4.</span> <span class="toc-text">04 进程模型与分布式部署：分布式计算是怎么回事？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">进程模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Dirver%E4%B8%8EExecutor"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">Dirver与Executor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#master"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">master</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%EF%BC%88%E4%BB%A5word-count%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">分布式任务（以word count为例）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="toc-number">1.4.2.</span> <span class="toc-text">分布式环境部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Standalone%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">Standalone模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Standalone%E5%88%86%E5%B8%83%E5%BC%8F%E9%83%A8%E7%BD%B2%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">Standalone分布式部署快速入门</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#05-%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8A%8A%E6%8F%A1%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97%E7%9A%84%E7%B2%BE%E9%AB%93"><span class="toc-number">1.5.</span> <span class="toc-text">05 调度系统：如何把握分布式计算的精髓</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#06-Shuffle%E7%AE%A1%E7%90%86%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88shuffle%E6%98%AF%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88"><span class="toc-number">1.6.</span> <span class="toc-text">06 Shuffle管理：为什么shuffle是性能瓶颈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#shuffle%E4%B8%AD%E9%97%B4%E6%96%87%E4%BB%B6"><span class="toc-number">1.6.1.</span> <span class="toc-text">shuffle中间文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#07-RDD%E5%B8%B8%E7%94%A8%E7%AE%97%E5%AD%90%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9ASpark%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88"><span class="toc-number">1.7.</span> <span class="toc-text">07 RDD常用算子（二）：Spark如何实现数据聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#groupByKey%EF%BC%9A%E5%88%86%E7%BB%84%E6%94%B6%E9%9B%86"><span class="toc-number">1.7.1.</span> <span class="toc-text">groupByKey：分组收集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reduceByKey%EF%BC%9A%E5%88%86%E7%BB%84%E8%81%9A%E5%90%88"><span class="toc-number">1.7.2.</span> <span class="toc-text">reduceByKey：分组聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#aggregateByKey%EF%BC%9A%E6%9B%B4%E5%8A%A0%E7%81%B5%E6%B4%BB%E7%9A%84%E8%81%9A%E5%90%88%E7%AE%97%E5%AD%90"><span class="toc-number">1.7.3.</span> <span class="toc-text">aggregateByKey：更加灵活的聚合算子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sortByKey%EF%BC%9A%E6%8E%92%E5%BA%8F"><span class="toc-number">1.7.4.</span> <span class="toc-text">sortByKey：排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#08-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%EF%BC%9ASpark%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%86%85%E5%AD%98"><span class="toc-number">1.8.</span> <span class="toc-text">08 内存管理：Spark如何使用内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDD-Cache"><span class="toc-number">1.8.1.</span> <span class="toc-text">RDD Cache</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#09-RDD%E5%B8%B8%E7%94%A8%E7%AE%97%E5%AD%90%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%9A%84%E5%87%86%E5%A4%87%E3%80%81%E9%87%8D%E5%88%86%E5%B8%83%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">1.9.</span> <span class="toc-text">09 RDD常用算子（三）：数据的准备、重分布与持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.9.1.</span> <span class="toc-text">数据准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#union"><span class="toc-number">1.9.1.1.</span> <span class="toc-text">union</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sample"><span class="toc-number">1.9.1.2.</span> <span class="toc-text">sample</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">1.9.2.</span> <span class="toc-text">数据预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#repartition"><span class="toc-number">1.9.2.1.</span> <span class="toc-text">repartition</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#coalesce"><span class="toc-number">1.9.2.2.</span> <span class="toc-text">coalesce</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E6%94%B6%E9%9B%86"><span class="toc-number">1.9.3.</span> <span class="toc-text">结果收集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#first%E3%80%81take%E5%92%8Ccollect"><span class="toc-number">1.9.3.1.</span> <span class="toc-text">first、take和collect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#saveAsTextFile"><span class="toc-number">1.9.3.2.</span> <span class="toc-text">saveAsTextFile</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%B9%BF%E6%92%AD%E5%8F%98%E9%87%8F-amp-%E7%B4%AF%E5%8A%A0%E5%99%A8%EF%BC%9A%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F%E6%98%AF%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%E7%9A%84%EF%BC%9F"><span class="toc-number">1.10.</span> <span class="toc-text">10 广播变量 &amp; 累加器：共享变量是用来做什么的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%BF%E6%92%AD%E5%8F%98%E9%87%8F%EF%BC%88Broadcast-variables%EF%BC%89"><span class="toc-number">1.10.1.</span> <span class="toc-text">广播变量（Broadcast variables）</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/26/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%85%A5/" title="数据仓库之数据接入">数据仓库之数据接入</a><time datetime="2023-02-26T07:40:30.000Z" title="发表于 2023-02-26 15:40:30">2023-02-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/23/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2Manacher%E7%AE%97%E6%B3%95/" title="算法复习：最长回文子串Manacher算法">算法复习：最长回文子串Manacher算法</a><time datetime="2023-02-23T06:36:00.000Z" title="发表于 2023-02-23 14:36:00">2023-02-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/22/%E7%88%AC%E8%99%AB%E5%88%9D%E4%BD%93%E9%AA%8C-%E7%88%AC%E5%8F%96b%E7%AB%99%E5%90%84%E5%88%86%E5%8C%BA%E8%A7%86%E9%A2%91%E4%BF%A1%E6%81%AF/" title="爬虫初体验 爬取b站各分区视频信息">爬虫初体验 爬取b站各分区视频信息</a><time datetime="2023-02-22T11:57:14.000Z" title="发表于 2023-02-22 19:57:14">2023-02-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/22/%E5%85%B3%E4%BA%8E%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%94%B5%E8%84%91%E6%91%84%E5%83%8F%E5%A4%B4%E6%98%BE%E7%A4%BA%E6%AD%A3%E5%B8%B8%E5%B7%A5%E4%BD%9C%E5%8D%B4%E6%B2%A1%E6%9C%89%E5%9B%BE%E5%83%8F%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于笔记本电脑摄像头显示正常工作却没有图像的问题">关于笔记本电脑摄像头显示正常工作却没有图像的问题</a><time datetime="2023-02-22T09:58:36.000Z" title="发表于 2023-02-22 17:58:36">2023-02-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/16/%E5%85%B3%E4%BA%8E-IntelliJ-Maven-error-Repository-is-non-nexus-repo-or-is-not-indexed-remote-update-error-%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题">关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题</a><time datetime="2023-02-16T05:55:07.000Z" title="发表于 2023-02-16 13:55:07">2023-02-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 62bit</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">谢谢你能够看到我!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
