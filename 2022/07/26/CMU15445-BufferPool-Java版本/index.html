@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>CMU15445 BufferPool Java版本 | 62bit的秘密基地</title><meta name="author" content="62bit"><meta name="copyright" content="62bit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="写在前面一些话对数据库存储引擎的结构比较感兴趣，所以看了CMU 15-445这门课，想要加深对存储引擎的理解，也想自己从零到一亲手实现一个项目，用实践检验自己的编程水平，同时可以丰富简历的内容。 本人主要学习的是Java这门语言，但这门课的lab是用C++实现的，很喜欢这门课，所以挑战一下用Java实现这些lab。 写这篇博客是为了整理思路，方便以后复习，互联网上用java写这个lab的项目寥寥无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMU15445 BufferPool Java版本">
+<meta property="og:url" content="http://example.com/2022/07/26/CMU15445-BufferPool-Java%E7%89%88%E6%9C%AC/index.html">
+<meta property="og:site_name" content="62bit的秘密基地">
+<meta property="og:description" content="写在前面一些话对数据库存储引擎的结构比较感兴趣，所以看了CMU 15-445这门课，想要加深对存储引擎的理解，也想自己从零到一亲手实现一个项目，用实践检验自己的编程水平，同时可以丰富简历的内容。 本人主要学习的是Java这门语言，但这门课的lab是用C++实现的，很喜欢这门课，所以挑战一下用Java实现这些lab。 写这篇博客是为了整理思路，方便以后复习，互联网上用java写这个lab的项目寥寥无">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/favicon.png">
+<meta property="article:published_time" content="2022-07-26T09:30:15.000Z">
+<meta property="article:modified_time" content="2023-02-26T09:30:57.546Z">
+<meta property="article:author" content="62bit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/favicon.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/07/26/CMU15445-BufferPool-Java%E7%89%88%E6%9C%AC/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 62bit","link":"链接: ","source":"来源: 62bit的秘密基地","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CMU15445 BufferPool Java版本',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-26 17:30:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="62bit的秘密基地"><span class="site-name">62bit的秘密基地</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CMU15445 BufferPool Java版本</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-26T09:30:15.000Z" title="发表于 2022-07-26 17:30:15">2022-07-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-26T09:30:57.546Z" title="更新于 2023-02-26 17:30:57">2023-02-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CMU15445 BufferPool Java版本"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h2 id="一些话"><a href="#一些话" class="headerlink" title="一些话"></a>一些话</h2><p>对数据库存储引擎的结构比较感兴趣，所以看了CMU 15-445这门课，想要加深对存储引擎的理解，也想自己从零到一亲手实现一个项目，用实践检验自己的编程水平，同时可以丰富简历的内容。</p>
+<p>本人主要学习的是Java这门语言，但这门课的lab是用C++实现的，很喜欢这门课，所以挑战一下用Java实现这些lab。</p>
+<p>写这篇博客是为了整理思路，方便以后复习，互联网上用java写这个lab的项目寥寥无几，也希望可以为想用Java完成这门课的小伙伴提供一些思路。</p>
+<p>本人水平很差，如有错误或更好的实现方法请务必在评论区指出来，不胜感激。</p>
+<h2 id="课程相关资源"><a href="#课程相关资源" class="headerlink" title="课程相关资源"></a>课程相关资源</h2><p>我看的是2019年的课，实验做的是2020年的</p>
+<p>课程视频可以在油管和B站找到，这里我推荐simniso这个团队，他们翻译得很好</p>
+<p>实验一说明地址：<a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2020/project1/">Project #1 - Buffer Pool | CMU 15-445&#x2F;645 :: Intro to Database Systems (Fall 2020)</a></p>
+<p>实验官方Git hub地址：<a target="_blank" rel="noopener" href="https://github.com/cmu-db/bustub">cmu-db&#x2F;bustub: The BusTub Relational Database Management System (Educational) (github.com)</a></p>
+<h1 id="Buffer-Pool缓冲池"><a href="#Buffer-Pool缓冲池" class="headerlink" title="Buffer Pool缓冲池"></a>Buffer Pool缓冲池</h1><p>课程视频里讲得很详细，可以配合《MySQL是怎样运行的》这本书的第17章食用</p>
+<p>下面讲一下我理解的Buffer Pool的结构</p>
+<ol>
+<li>Buffer Pool由若干个页组成，这些页是磁盘中的页的复制版（称为缓冲页frame）</li>
+<li>每一个缓冲页对应一个控制块(我称之为block)</li>
+<li>Buffer Pool中有若干条由控制块组成的链表：free链表，flush链表，LRU链表，……</li>
+</ol>
+<p>具体这些结构是干嘛的，下面用到的时候再说吧</p>
+<h1 id="TASK-1-LRU-REPLACEMENT-POLICY"><a href="#TASK-1-LRU-REPLACEMENT-POLICY" class="headerlink" title="TASK #1 - LRU REPLACEMENT POLICY"></a>TASK #1 - LRU REPLACEMENT POLICY</h1><p>任务描述：实现Buffer Pool中的LRU（Least Recently Used）链表</p>
+<h2 id="数据结构中的LRU"><a href="#数据结构中的LRU" class="headerlink" title="数据结构中的LRU"></a>数据结构中的LRU</h2><p>LRU链表原理没什么好说的，可以先去力扣做一下这道题：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lru-cache/">146. LRU 缓存 - 力扣（LeetCode）</a></p>
+<h2 id="Buffer-Pool中的LRU"><a href="#Buffer-Pool中的LRU" class="headerlink" title="Buffer Pool中的LRU"></a>Buffer Pool中的LRU</h2><p>因为缓冲池的大小是有限的，所以在空间不够时，利用LRU结构将内存中不常用的页释放掉，为新加载的页腾出空间</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>参考《MySQL是怎样运行的》第282页</p>
+<blockquote>
+<p>当访问某个页时，可以按照下面的方式处理LRU链表：</p>
+<ul>
+<li>如果该页不在Buffer Pool中，在把该页加载到缓冲池中时，把对应的控制块塞到LRU链表的头部</li>
+<li>如果该页已经在Buffer Pool中，则直接把对应的控制块移动到LRU链表的头部</li>
+</ul>
+</blockquote>
+<h2 id="实验任务"><a href="#实验任务" class="headerlink" title="实验任务"></a>实验任务</h2><ul>
+<li><code>Victim(T*)</code> : Remove the object that was accessed the least recently compared to all the elements being tracked by the <code>Replacer</code>, store its contents in the output parameter and return <code>True</code>. If the <code>Replacer</code> is empty return <code>False</code>.</li>
+<li><code>Pin(T)</code> : This method should be called after a page is pinned to a frame in the <code>BufferPoolManager</code>. It should remove the frame containing the pinned page from the <code>LRUReplacer</code>.</li>
+<li><code>Unpin(T)</code> : This method should be called when the <code>pin_count</code> of a page becomes 0. This method should add the frame containing the unpinned page to the <code>LRUReplacer</code>.</li>
+<li><code>Size()</code> : This method returns the number of frames that are currently in the <code>LRUReplacer</code>.</li>
+</ul>
+<h3 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> common.Config.INVALID_PAGE_ID;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Block</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Page frame;</span><br><span class="line">    Block lru_next;</span><br><span class="line">    Block lru_prev;</span><br><span class="line">    <span class="type">int</span> frameId;</span><br><span class="line">    <span class="type">boolean</span> isDirty;</span><br><span class="line">    <span class="type">int</span> pinCount;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Block</span><span class="params">()</span>&#123;</span><br><span class="line">        frameId = INVALID_PAGE_ID;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-Pin和Unpin"><a href="#1-Pin和Unpin" class="headerlink" title="1. Pin和Unpin"></a>1. Pin和Unpin</h3><p>Pin：标记当前页正在被使用，从LRU中暂时移除该页对应的控制块</p>
+<p>Unpin：当前页已经使用完毕，加到LRU头部</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">pin</span><span class="params">(Block block)</span> &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">        block.pinCount++;</span><br><span class="line">        size--;<span class="comment">//暂时从链表中移除</span></span><br><span class="line">        removeBlock(block);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">unpin</span><span class="params">(Block block)</span> &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">    	<span class="keyword">if</span>(size() == capacity) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Out of memory&quot;</span>);</span><br><span class="line">    	size++;</span><br><span class="line">    	block.pinCount--;</span><br><span class="line">    	addToHead(block);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h4><p>为什么都是操作控制块block而不直接操作缓冲页frame呢？</p>
+<p>个人理解如果不用控制块，而是把控制信息放在缓冲页中，等到把缓冲页刷回磁盘时，还要把这些无用的控制信息删掉，就很麻烦</p>
+<p>所以用控制块保存控制信息，操作更简单，而且减少了每个缓冲页的额外数据的大小</p>
+<p>而且控制块可以重复利用，同一个控制块不同时期可以对应不同的页</p>
+<h3 id="2-Victim函数实现"><a href="#2-Victim函数实现" class="headerlink" title="2. Victim函数实现"></a>2. Victim函数实现</h3><p>Victim是用来找到一个最不常用的缓冲页(LRU末尾的控制块对应的缓冲页)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Block <span class="title function_">victim</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">        <span class="type">Block</span> <span class="variable">block</span> <span class="operator">=</span> tail.lru_prev;</span><br><span class="line">        <span class="keyword">if</span>(block.pinCount &gt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;All the pages are pinned&quot;</span>);</span><br><span class="line">        moveToHead(block);</span><br><span class="line">        <span class="keyword">return</span> block;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>size()没啥好说的就不说了</p>
+<h1 id="TASK-2-BUFFER-POOL-MANAGER"><a href="#TASK-2-BUFFER-POOL-MANAGER" class="headerlink" title="TASK #2 - BUFFER POOL MANAGER"></a>TASK #2 - BUFFER POOL MANAGER</h1><p>Buffer Pool上面介绍过了</p>
+<h2 id="实验任务-1"><a href="#实验任务-1" class="headerlink" title="实验任务"></a>实验任务</h2><ul>
+<li><code>FetchPageImpl(page_id)</code></li>
+<li><code>NewPageImpl(page_id)</code></li>
+<li><code>UnpinPageImpl(page_id, is_dirty)</code></li>
+<li><code>FlushPageImpl(page_id)</code></li>
+<li><code>DeletePageImpl(page_id)</code></li>
+<li><code>FlushAllPagesImpl()</code></li>
+</ul>
+<h3 id="1-FlushPageImpl-page-id-amp-DeletePageImpl-page-id"><a href="#1-FlushPageImpl-page-id-amp-DeletePageImpl-page-id" class="headerlink" title="1. FlushPageImpl(page_id) &amp; DeletePageImpl(page_id)"></a>1. FlushPageImpl(page_id) &amp; DeletePageImpl(page_id)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用该方法时要确保pinCount == 0</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">flushPg</span><span class="params">(<span class="type">int</span> pageId)</span>&#123;<span class="comment">//将指定的页的内容刷回磁盘</span></span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>)&#123;</span><br><span class="line">        <span class="type">Block</span> <span class="variable">block</span> <span class="operator">=</span> idMap.get(pageId);</span><br><span class="line">        <span class="keyword">if</span>(idMap.containsKey(pageId) &amp;&amp; block.isDirty)&#123;</span><br><span class="line">            diskManager.writePage(pageId, block.frame.getData());</span><br><span class="line">            flushList.remove(block);</span><br><span class="line">            block.isDirty = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deletePg</span><span class="params">(Block block)</span>&#123;</span><br><span class="line">    <span class="comment">// 0.   Make sure you call DeallocatePage!</span></span><br><span class="line">    <span class="comment">// 1.   Search the page table for the requested page (P).</span></span><br><span class="line">    <span class="comment">// 1.   If P does not exist, return true.</span></span><br><span class="line">    <span class="comment">// 2.   If P exists, but has a non-zero pin-count, return false. Someone is using the page.</span></span><br><span class="line">    <span class="comment">// 3.   Otherwise, P can be deleted. Remove P from the page table, reset its metadata and return it to the free list.</span></span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(idMap.containsValue(block)) &#123;</span><br><span class="line">            <span class="keyword">if</span>(block.pinCount &gt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Someone is using the page&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span>(block.isDirty) flushPg(block);</span><br><span class="line">            block.frame = <span class="literal">null</span>;</span><br><span class="line">            idMap.remove(pageId);</span><br><span class="line">            freeList.add(block);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-NewPageImpl-page-id"><a href="#2-NewPageImpl-page-id" class="headerlink" title="2. NewPageImpl(page_id)"></a>2. NewPageImpl(page_id)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在buffer pool中新建一个页(磁盘中某个页的复制)</span></span><br><span class="line"><span class="keyword">public</span> Page <span class="title function_">newPg</span><span class="params">(<span class="type">int</span> pageId)</span> &#123;</span><br><span class="line">    <span class="comment">// 0.   Make sure you call AllocatePage!</span></span><br><span class="line">    <span class="comment">// 1.   If all the pages in the buffer pool are pinned, return nullptr.</span></span><br><span class="line">    <span class="comment">// 2.   Pick a victim page P from either the free list or the replacer. Always pick from the free list first.</span></span><br><span class="line">    <span class="comment">// 3.   Update P&#x27;s metadata, zero out memory and add P to the page table.</span></span><br><span class="line">    <span class="comment">// 4.   Set the page ID output parameter. Return a pointer to P.</span></span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>)&#123;</span><br><span class="line">        <span class="type">Block</span> <span class="variable">block</span> <span class="operator">=</span> findFreeBlock();</span><br><span class="line">        <span class="type">byte</span>[] data = <span class="keyword">new</span> <span class="title class_">byte</span>[PAGE_SIZE];</span><br><span class="line">        diskManager.readPage(pageId,data);</span><br><span class="line">        block.frame = <span class="keyword">new</span> <span class="title class_">Page</span>(pageId, data);</span><br><span class="line">        block.frameId = pageId;</span><br><span class="line">        block.pinCount = <span class="number">1</span>;</span><br><span class="line">        idMap.put(pageId, block);</span><br><span class="line">        <span class="keyword">return</span> block.frame;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//找一个空闲的缓冲页</span></span><br><span class="line"><span class="comment">//如果没有空闲缓冲页就刷一个没用的旧页作为空闲的缓冲页</span></span><br><span class="line"><span class="keyword">public</span> Block <span class="title function_">findFreeBlock</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!freeList.isEmpty())&#123;<span class="comment">//如果有空闲的缓冲页</span></span><br><span class="line">        <span class="keyword">return</span> freeList.remove(<span class="number">0</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;<span class="comment">//如果没有就找一个</span></span><br><span class="line">        <span class="type">Block</span> <span class="variable">block</span> <span class="operator">=</span> lruList.victim();</span><br><span class="line">        deletePg(block.frameId);</span><br><span class="line">        <span class="keyword">return</span> block;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-FetchPageImpl-page-id"><a href="#3-FetchPageImpl-page-id" class="headerlink" title="3. FetchPageImpl(page_id)"></a>3. FetchPageImpl(page_id)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取指定的页</span></span><br><span class="line"><span class="keyword">public</span> Page <span class="title function_">fetchPg</span><span class="params">(<span class="type">int</span> pageId)</span>&#123;</span><br><span class="line">    <span class="comment">// 1.     Search the page table for the requested page (P).</span></span><br><span class="line">    <span class="comment">// 1.1    If P exists, pin it and return it immediately.</span></span><br><span class="line">    <span class="comment">// 1.2    If P does not exist, find a replacement page (R) from either the free list or the replacer.</span></span><br><span class="line">    <span class="comment">//        Note that pages are always found from the free list first.</span></span><br><span class="line">    <span class="comment">// 2.     If R is dirty, write it back to the disk.</span></span><br><span class="line">    <span class="comment">// 3.     Delete R from the page table and insert P.</span></span><br><span class="line">    <span class="comment">// 4.     Update P&#x27;s metadata, read in the page content from disk, and then return a pointer to P.</span></span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(pageId == INVALID_PAGE_ID) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="comment">//如果缓冲池里有这个页</span></span><br><span class="line">        <span class="keyword">if</span>(idMap.containsKey(pageId))&#123;</span><br><span class="line">            freeList.remove(pageId);</span><br><span class="line">            lruList.pin(idMap.get(pageId));</span><br><span class="line">            <span class="keyword">return</span> idMap.get(pageId).frame;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> newPg(pageId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-UnpinPageImpl-page-id-is-dirty"><a href="#4-UnpinPageImpl-page-id-is-dirty" class="headerlink" title="4. UnpinPageImpl(page_id, is_dirty)"></a>4. UnpinPageImpl(page_id, is_dirty)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">unpinPg</span><span class="params">(<span class="type">int</span> pageId, <span class="type">boolean</span> isDirty)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!idMap.containsKey(pageId)) <span class="keyword">return</span>;</span><br><span class="line">    <span class="type">Block</span> <span class="variable">block</span> <span class="operator">=</span> idMap.get(pageId);</span><br><span class="line">    <span class="keyword">if</span>(block.pinCount == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(isDirty)&#123;</span><br><span class="line">        block.isDirty = <span class="literal">true</span>;</span><br><span class="line">        flushList.add(block);</span><br><span class="line">    &#125;</span><br><span class="line">    lruList.unpin(block);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-FlushAllPagesImpl"><a href="#5-FlushAllPagesImpl" class="headerlink" title="5. FlushAllPagesImpl()"></a>5. FlushAllPagesImpl()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">flushAllPg</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Block block : flushList)&#123;</span><br><span class="line">        flushPg(block.frameId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">BufferPoolManager</span><span class="params">(DiskManager diskManager, <span class="type">int</span> bufferPoolSize)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.diskManager = diskManager;</span><br><span class="line">    lruList = <span class="keyword">new</span> <span class="title class_">LRUReplacer</span>(bufferPoolSize);</span><br><span class="line">    idMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    freeList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    flushList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    <span class="comment">//this.bufferPoolSize = bufferPoolSize;</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; bufferPoolSize; i++)&#123;</span><br><span class="line">        <span class="type">Block</span> <span class="variable">block</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Block</span>();</span><br><span class="line">        block.frame = newPg(INVALID_PAGE_ID);</span><br><span class="line">        idMap.put(block.frame.getPageId(), block);</span><br><span class="line">        freeList.add(block);<span class="comment">//一开始所有缓冲页都是空闲的</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2020/project1/">Project #1 - Buffer Pool | CMU 15-445&#x2F;645 :: Intro to Database Systems (Fall 2020)</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cmu-db/bustub">cmu-db&#x2F;bustub: The BusTub Relational Database Management System (Educational) (github.com)</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/JayL-zxl/p/14311883.html">已满分]CMU数据库（15-445）实验1-BufferPoolManager - 周小伦 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/LAOAWILLIAM/txDB">LAOAWILLIAM&#x2F;txDB: An on-disk relational database system (In progress) (github.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CNYuYang/BusTub">CNYuYang&#x2F;BusTub: BusTub的Java ☕ 版本！ (github.com)</a></p>
+<p>《MySQL是怎样运行的》第17章</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">62bit</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/07/26/CMU15445-BufferPool-Java%E7%89%88%E6%9C%AC/">http://example.com/2022/07/26/CMU15445-BufferPool-Java%E7%89%88%E6%9C%AC/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">62bit的秘密基地</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/favicon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/21/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Spark学习笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Spark学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/16/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="算法学习笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">算法学习笔记</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">62bit</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/62bit"><i class="fab fa-github"></i><span>My Github</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">江苏科技大学某不知名菜鸟的个人博客
+喜欢术力口和跳舞的准程序猿</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E8%AF%9D"><span class="toc-number">1.1.</span> <span class="toc-text">一些话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-number">1.2.</span> <span class="toc-text">课程相关资源</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Buffer-Pool%E7%BC%93%E5%86%B2%E6%B1%A0"><span class="toc-number">2.</span> <span class="toc-text">Buffer Pool缓冲池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TASK-1-LRU-REPLACEMENT-POLICY"><span class="toc-number">3.</span> <span class="toc-text">TASK #1 - LRU REPLACEMENT POLICY</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%AD%E7%9A%84LRU"><span class="toc-number">3.1.</span> <span class="toc-text">数据结构中的LRU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffer-Pool%E4%B8%AD%E7%9A%84LRU"><span class="toc-number">3.2.</span> <span class="toc-text">Buffer Pool中的LRU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">3.3.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%BB%E5%8A%A1"><span class="toc-number">3.4.</span> <span class="toc-text">实验任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Block"><span class="toc-number">3.4.1.</span> <span class="toc-text">Block</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Pin%E5%92%8CUnpin"><span class="toc-number">3.4.2.</span> <span class="toc-text">1. Pin和Unpin</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E5%A4%96%E8%AF%9D"><span class="toc-number">3.4.2.1.</span> <span class="toc-text">题外话</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Victim%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.4.3.</span> <span class="toc-text">2. Victim函数实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TASK-2-BUFFER-POOL-MANAGER"><span class="toc-number">4.</span> <span class="toc-text">TASK #2 - BUFFER POOL MANAGER</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%BB%E5%8A%A1-1"><span class="toc-number">4.1.</span> <span class="toc-text">实验任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-FlushPageImpl-page-id-amp-DeletePageImpl-page-id"><span class="toc-number">4.1.1.</span> <span class="toc-text">1. FlushPageImpl(page_id) &amp; DeletePageImpl(page_id)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-NewPageImpl-page-id"><span class="toc-number">4.1.2.</span> <span class="toc-text">2. NewPageImpl(page_id)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-FetchPageImpl-page-id"><span class="toc-number">4.1.3.</span> <span class="toc-text">3. FetchPageImpl(page_id)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-UnpinPageImpl-page-id-is-dirty"><span class="toc-number">4.1.4.</span> <span class="toc-text">4. UnpinPageImpl(page_id, is_dirty)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-FlushAllPagesImpl"><span class="toc-number">4.1.5.</span> <span class="toc-text">5. FlushAllPagesImpl()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">4.1.6.</span> <span class="toc-text">初始化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/26/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%85%A5/" title="数据仓库之数据接入">数据仓库之数据接入</a><time datetime="2023-02-26T07:40:30.000Z" title="发表于 2023-02-26 15:40:30">2023-02-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/23/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2Manacher%E7%AE%97%E6%B3%95/" title="算法复习：最长回文子串Manacher算法">算法复习：最长回文子串Manacher算法</a><time datetime="2023-02-23T06:36:00.000Z" title="发表于 2023-02-23 14:36:00">2023-02-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/22/%E7%88%AC%E8%99%AB%E5%88%9D%E4%BD%93%E9%AA%8C-%E7%88%AC%E5%8F%96b%E7%AB%99%E5%90%84%E5%88%86%E5%8C%BA%E8%A7%86%E9%A2%91%E4%BF%A1%E6%81%AF/" title="爬虫初体验 爬取b站各分区视频信息">爬虫初体验 爬取b站各分区视频信息</a><time datetime="2023-02-22T11:57:14.000Z" title="发表于 2023-02-22 19:57:14">2023-02-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/22/%E5%85%B3%E4%BA%8E%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%94%B5%E8%84%91%E6%91%84%E5%83%8F%E5%A4%B4%E6%98%BE%E7%A4%BA%E6%AD%A3%E5%B8%B8%E5%B7%A5%E4%BD%9C%E5%8D%B4%E6%B2%A1%E6%9C%89%E5%9B%BE%E5%83%8F%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于笔记本电脑摄像头显示正常工作却没有图像的问题">关于笔记本电脑摄像头显示正常工作却没有图像的问题</a><time datetime="2023-02-22T09:58:36.000Z" title="发表于 2023-02-22 17:58:36">2023-02-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/02/16/%E5%85%B3%E4%BA%8E-IntelliJ-Maven-error-Repository-is-non-nexus-repo-or-is-not-indexed-remote-update-error-%E7%9A%84%E9%97%AE%E9%A2%98/" title="关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题">关于 IntelliJ Maven error: Repository is non-nexus repo, or is not indexed (remote update error) 的问题</a><time datetime="2023-02-16T05:55:07.000Z" title="发表于 2023-02-16 13:55:07">2023-02-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 62bit</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">谢谢你能够看到我!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
