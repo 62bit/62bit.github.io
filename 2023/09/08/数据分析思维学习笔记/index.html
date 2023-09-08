@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>数据分析思维学习笔记 | 62bit的秘密基地</title><meta name="author" content="62bit"><meta name="copyright" content="62bit"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="平均值：不要被骗了，它不能代表整体水平整体平均值是在数据均匀分布或正态分布的情况下才会有意义 辛普森悖论：在分组比较中都占优势的一方，有的时候在总评中反而是失势的一方。 辛普森悖论产生的原因：权重小的因素在整体中的数量过大，影响了结果 辛普森悖论也给我们一个启示，就是：每次小范围内的输赢，其实和你在整体上的输赢没有太大直接的关系。（赢一堆小的不如赢一把大的）  摘自百度百科：辛普森悖论 回避方式：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据分析思维学习笔记">
+<meta property="og:url" content="http://example.com/2023/09/08/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="62bit的秘密基地">
+<meta property="og:description" content="平均值：不要被骗了，它不能代表整体水平整体平均值是在数据均匀分布或正态分布的情况下才会有意义 辛普森悖论：在分组比较中都占优势的一方，有的时候在总评中反而是失势的一方。 辛普森悖论产生的原因：权重小的因素在整体中的数量过大，影响了结果 辛普森悖论也给我们一个启示，就是：每次小范围内的输赢，其实和你在整体上的输赢没有太大直接的关系。（赢一堆小的不如赢一把大的）  摘自百度百科：辛普森悖论 回避方式：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/favicon.png">
+<meta property="article:published_time" content="2023-09-08T01:39:32.000Z">
+<meta property="article:modified_time" content="2023-09-07T16:00:00.000Z">
+<meta property="article:author" content="62bit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/favicon.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2023/09/08/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 62bit","link":"链接: ","source":"来源: 62bit的秘密基地","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据分析思维学习笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-08 00:00:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="62bit的秘密基地"><span class="site-name">62bit的秘密基地</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据分析思维学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-08T01:39:32.000Z" title="发表于 2023-09-08 09:39:32">2023-09-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-07T16:00:00.000Z" title="更新于 2023-09-08 00:00:00">2023-09-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据分析思维学习笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="平均值：不要被骗了，它不能代表整体水平"><a href="#平均值：不要被骗了，它不能代表整体水平" class="headerlink" title="平均值：不要被骗了，它不能代表整体水平"></a>平均值：不要被骗了，它不能代表整体水平</h1><p>整体平均值是<strong>在数据均匀分布或正态分布的情况下才会有意义</strong></p>
+<p>辛普森悖论：在分组比较中都占优势的一方，有的时候在总评中反而是失势的一方。</p>
+<p>辛普森悖论产生的原因：权重小的因素在整体中的数量过大，影响了结果</p>
+<p>辛普森悖论也给我们一个启示，就是：每次小范围内的输赢，其实和你在整体上的输赢没有太大直接的关系。（赢一堆小的不如赢一把大的）</p>
+<blockquote>
+<p>摘自百度百科：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA">辛普森悖论</a></p>
+<p>回避方式：</p>
+<p>为了避免辛普森悖论出现，就需要斟酌个别分组的权重，以一定的系数去消除以分组资料基数差异所造成的影响，同时必需了解该情境是否存在其他潜在要因而综合考虑。</p>
+<p>管理应用：</p>
+<p>辛普森悖论就像是欲比赛100场篮球以总胜率评价好坏，于是有人专找高手挑战20 场而胜1场，另外80场找平手挑战而胜40场，结果胜率41%，另一人则专挑高手挑战80场而胜8场，而剩下20场平手打个全胜，结果胜率为28%，比 41%小很多，但仔细观察挑战对象，后者明显较有实力。</p>
+<p>量与质是不等价的，无奈的是量比质来得容易量测，所以人们总是习惯用量来评定好坏，而此数据却不是重要的。除了质与量的迷思之外，辛普森悖论的另外一个启示是：<strong>如果我们在人生的抉择上选择了一条比较难走的路，就得要有可能不被赏识的领悟，所以这算是怀才不遇这个成语在统计上的诠释。</strong></p>
+</blockquote>
+<blockquote>
+<p>摘自评论区：</p>
+<p>从经济学观点来看，这个问题就是有限资源的利用与配置问题。经济学本质上就是一门决策的学问。 首先分别看AB两球员二、三分球的期望得分。</p>
+<p>​    二分球          三分球 </p>
+<p>A  2<em>0.8&#x3D;1.6       3</em>0.1&#x3D;0.3 </p>
+<p>B  2<em>0.9&#x3D;1.8       3</em>1&#x2F;3 &#x3D;1 </p>
+<p>无论是二分球还是三分球，B的期望得分都高于A，显然B的投篮能力强于A。那我们能说B球员比A球员强吗？并不能。 用得分数&#x2F;球数得到每球的平均得分，A为1.38，B为1.32。 可见A的得分能力强于B。</p>
+<p>由以上我们可知，局部最优不一定会整体最优，整体最优也不意味着局部最优。 那么局部与整体之间如何选择，如何分配资源呢？那要看衡量指标。球赛的最终目标就是使总分尽量高，也就是整体最优，从这个指标来看问题，A是强于B的。假如A或B有100次投篮的机会，应尽量选择投二分球。三分球应当尽量不选择，或者是在把握很大时再选择投三分球。</p>
+<p>但实际问题在中，衡量指标远远没有这么简单。 就拿经济发展来说，最先想到的指标必然是GDP或者经济增长率之类的指标。如果仅仅是为了经济增长，发展边远地区费力难见效，为什么还要扶持边远地区？有的山上就几户人家，为什么一定要通上电，邮政为啥一定要送到？</p>
+<p>因为要考虑的指标太多了，除了GDP还要考虑人民幸福感、地区发展不均衡等的问题。中国虽然GDP全世界第二但我们依然不是发达国家。 整体重要还是局部重要，具体问题具体分析。 辛普森悖论的本质就是用部分来衡量整体，或者是用整体来衡量部分。</p>
+<p>关于作者所说的“质”与“量”问题也挺有意思的。“质”可以理解为能力、效率、或者是产出能力，“量”就是投入的资源，比如时间、精力与金钱。“质”和“量”相乘就是结果或者产出了。举个例子，“质”就是速度，“量”就是运动的时间，二者相乘就是路程。速度快却不一定跑得远。</p>
+<p>投入相同的时间，你可能数学只能涨10分，而政治能涨15分，那就多把时间给政治吗？也不对。刚才说A与B球员都尽量多投二分，那我多把时间给政治，总分却不能一直涨。</p>
+<p>原因有主要两个。一是存在边界。二是存在边际效应递减。</p>
+<p>我们再跳出考试这个圈子，考试数学最多也就150。如果努力学数学，成为一代大家，其他方面很一般也影响不大，这就从局部最优实现了总结果最优。他虽然在很多方面可能比不上一般人，我们依然可以说他的成就超过了大多数人。数据分析，要带着指标来分析。 最近专业课老师刚刚讲了聚类算法，从我短浅的认知来看，数据分析里面的聚类与分类算法，或许能在一定程度上避免辛普森谬论。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">62bit</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/09/08/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">http://example.com/2023/09/08/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">62bit的秘密基地</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/favicon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/03/20/%E9%9D%A2%E8%AF%95%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AAJava%E5%9F%BA%E7%A1%80%E9%97%AE%E9%A2%98/" title="面试中遇到的一个Java基础问题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">面试中遇到的一个Java基础问题</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">62bit</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/62bit"><i class="fab fa-github"></i><span>My Github</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">江苏科技大学某不知名菜鸟的个人博客
+喜欢术力口和跳舞的准程序猿</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E5%80%BC%EF%BC%9A%E4%B8%8D%E8%A6%81%E8%A2%AB%E9%AA%97%E4%BA%86%EF%BC%8C%E5%AE%83%E4%B8%8D%E8%83%BD%E4%BB%A3%E8%A1%A8%E6%95%B4%E4%BD%93%E6%B0%B4%E5%B9%B3"><span class="toc-number">1.</span> <span class="toc-text">平均值：不要被骗了，它不能代表整体水平</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/09/08/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="数据分析思维学习笔记">数据分析思维学习笔记</a><time datetime="2023-09-08T01:39:32.000Z" title="发表于 2023-09-08 09:39:32">2023-09-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/%E9%9D%A2%E8%AF%95%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AAJava%E5%9F%BA%E7%A1%80%E9%97%AE%E9%A2%98/" title="面试中遇到的一个Java基础问题">面试中遇到的一个Java基础问题</a><time datetime="2023-03-20T09:30:50.000Z" title="发表于 2023-03-20 17:30:50">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/19/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8BADS%E5%B1%82%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" title="数据仓库之ADS层数据可视化">数据仓库之ADS层数据可视化</a><time datetime="2023-03-19T07:36:31.000Z" title="发表于 2023-03-19 15:36:31">2023-03-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/16/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E7%BB%B4%E5%BA%A6%E5%BB%BA%E6%A8%A1/" title="数据仓库之维度建模">数据仓库之维度建模</a><time datetime="2023-03-16T10:26:18.000Z" title="发表于 2023-03-16 18:26:18">2023-03-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/12/%E7%AE%97%E6%B3%95%E5%A4%8D%E4%B9%A0%E4%B9%8B%E4%BA%8C%E5%8F%89%E6%A0%91/" title="数据结构与算法复习之二叉树">数据结构与算法复习之二叉树</a><time datetime="2023-03-12T10:07:12.000Z" title="发表于 2023-03-12 18:07:12">2023-03-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 62bit</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">谢谢你能够看到我!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
